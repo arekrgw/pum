@@ -22,7 +22,7 @@ function paintCircle(color) {
 paintCircle(lastColor);
 
 setInterval(() => {
-  const currentColor = lastColor === "green" ? "red" : "green";
+  const currentColor = lastColor === "green" ? "blue" : "green";
   paintCircle(currentColor);
   lastColor = currentColor;
 }, 1000);
