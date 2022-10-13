@@ -40,6 +40,8 @@ let lastPositionChangeTime = 0;
 let updateTime3 = 50;
 let up = false;
 let step = 2;
+let lastPositionChange = 0;
+let positionChangeInterval = 20;
 let x2 = 400,
   y2Max = 400,
   y2 = 70;
@@ -81,21 +83,22 @@ function update(timestamp) {
         toGreen2 = true;
       }
     }
+  }
 
+  if (timestamp - lastPositionChangeTime > positionChangeInterval) {
+    lastPositionChangeTime = timestamp;
     if (up) {
-      y2 += step;
-      if (y2 >= y2Max) {
+      y2 -= step;
+      if (y2 <= 70) {
         up = false;
       }
     } else {
-      y2 -= step;
-      if (y2 <= 70) {
+      y2 += step;
+      if (y2 >= y2Max) {
         up = true;
       }
     }
   }
-
-
 }
 
 function render() {
