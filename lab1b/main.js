@@ -29,8 +29,17 @@ let currentColor = 0;
 let toGreen = true;
 let lastUpdateCircle2 = 0;
 let updateTime2 = 50;
-let x1 = 280,
+let x1 = 220,
   y1 = 70;
+
+// third circle
+let currentColor2 = 0;
+let toGreen2 = true;
+let lastUpdateCircle3 = 0;
+let updateTime3 = 50;
+let x2 = 400,
+  y2 = 70;
+
 
 function update(timestamp) {
   // first circle
@@ -39,6 +48,7 @@ function update(timestamp) {
     colorF = colorF === "green" ? "blue" : "green";
   }
 
+  // second circle
   if (timestamp - lastUpdateCircle2 > updateTime2) {
     lastUpdateCircle2 = timestamp;
     if (toGreen) {
