@@ -10,12 +10,6 @@ function clearCanvas() {
   ctx.clearRect(0, 0, canvas.width, canvas.height);
 }
 
-const redVal = 0;
-const greenVal = 128;
-let current = 0;
-
-let toGreen = true;
-
 function paintCircle(color, x, y) {
   ctx.beginPath();
   ctx.arc(x, y, radius, 0, 2 * Math.PI);
@@ -27,16 +21,16 @@ function paintCircle(color, x, y) {
 let colorF = "green";
 let lastUpdateCircle1 = 0;
 let updateTime = 1000;
-let x = 35,
-  y = 35;
+let x = 70,
+  y = 70;
 
 // second circle
 let currentColor = 0;
 let toGreen = true;
 let lastUpdateCircle2 = 0;
-let updateTime2 = 200;
-let x1 = 80,
-  y1 = 35;
+let updateTime2 = 50;
+let x1 = 280,
+  y1 = 70;
 
 function update(timestamp) {
   // first circle
@@ -45,16 +39,26 @@ function update(timestamp) {
     colorF = colorF === "green" ? "blue" : "green";
   }
 
-  if(timestamp - lastUpdateCircle2 > updateTime2){
+  if (timestamp - lastUpdateCircle2 > updateTime2) {
     lastUpdateCircle2 = timestamp;
-    if
-
+    if (toGreen) {
+      currentColor += 1;
+      if (currentColor >= 128) {
+        toGreen = false;
+      }
+    } else {
+      currentColor -= 1;
+      if (currentColor <= 0) {
+        toGreen = true;
+      }
+    }
   }
 }
 
 function render() {
   // first circle
   paintCircle(colorF, x, y);
+  paintCircle(`hsl(${currentColor}, 100%, 50%)`, x1, y1);
 }
 
 let lastRender = 0;
