@@ -36,10 +36,13 @@ let x1 = 220,
 let currentColor2 = 0;
 let toGreen2 = true;
 let lastUpdateCircle3 = 0;
+let lastPositionChangeTime = 0;
 let updateTime3 = 50;
+let up = false;
+let step = 2;
 let x2 = 400,
+  y2Max = 400,
   y2 = 70;
-
 
 function update(timestamp) {
   // first circle
@@ -63,12 +66,44 @@ function update(timestamp) {
       }
     }
   }
+
+  // third circle
+  if (timestamp - lastUpdateCircle3 > updateTime3) {
+    lastUpdateCircle3 = timestamp;
+    if (toGreen2) {
+      currentColor2 += 1;
+      if (currentColor2 >= 128) {
+        toGreen2 = false;
+      }
+    } else {
+      currentColor2 -= 1;
+      if (currentColor2 <= 0) {
+        toGreen2 = true;
+      }
+    }
+
+    if (up) {
+      y2 += step;
+      if (y2 >= y2Max) {
+        up = false;
+      }
+    } else {
+      y2 -= step;
+      if (y2 <= 70) {
+        up = true;
+      }
+    }
+  }
+
+
 }
 
 function render() {
   // first circle
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
   paintCircle(colorF, x, y);
   paintCircle(`hsl(${currentColor}, 100%, 50%)`, x1, y1);
+  paintCircle(`hsl(${currentColor2}, 100%, 50%)`, x2, y2);
 }
 
 let lastRender = 0;
