@@ -39,12 +39,19 @@ let lastUpdateCircle3 = 0;
 let lastPositionChangeTime = 0;
 let updateTime3 = 50;
 let up = false;
-let step = 2;
+let step = 0.03;
 let lastPositionChange = 0;
 let positionChangeInterval = 20;
 let x2 = 400,
   y2Max = 400,
   y2 = 70;
+y2Min = 70;
+y2Delta = 330;
+yprogress = 0;
+
+function easeInCubic(x) {
+  return x * x * x;
+}
 
 function update(timestamp) {
   // first circle
@@ -88,12 +95,14 @@ function update(timestamp) {
   if (timestamp - lastPositionChangeTime > positionChangeInterval) {
     lastPositionChangeTime = timestamp;
     if (up) {
-      y2 -= step;
+      yprogress -= step;
+      y2 = y2Delta * easeInCubic(yprogress) + y2Min;
       if (y2 <= 70) {
         up = false;
       }
     } else {
-      y2 += step;
+      yprogress += step;
+      y2 = y2Delta * easeInCubic(yprogress) + y2Min;
       if (y2 >= y2Max) {
         up = true;
       }
