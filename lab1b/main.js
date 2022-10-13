@@ -18,43 +18,38 @@ let toGreen = true;
 
 function paintCircle(color, x, y) {
   ctx.beginPath();
-  ctx.arc(centerX, centerY, radius, 0, 2 * Math.PI);
+  ctx.arc(x, y, radius, 0, 2 * Math.PI);
   ctx.fillStyle = color;
   ctx.fill();
 }
 
-paintCircle(`hsl(${current}, 100%, 50%)`);
-
-setInterval(() => {
-  if (toGreen) {
-    current += 1;
-    if (current >= 128) {
-      toGreen = false;
-    }
-  } else {
-    current -= 1;
-    if (current <= 0) {
-      toGreen = true;
-    }
-  }
-
-  console.log(current)
-  const currentColor = `hsl(${current}, 100%, 50%)`;
-  paintCircle(currentColor);
-}, 20);
-
 // first circle
 let colorF = "green";
+let lastUpdateCircle1 = 0;
 let updateTime = 1000;
-let x = 70, y = 70;
+let x = 35,
+  y = 35;
 
+// second circle
+let currentColor = 0;
+let toGreen = true;
+let lastUpdateCircle2 = 0;
+let updateTime2 = 200;
+let x1 = 80,
+  y1 = 35;
 
-function update(timeElapsed) {
+function update(timestamp) {
   // first circle
-  if(timeElapsed > updateTime) {
-    colorF === "green" ? "blue" : "green";
+  if (timestamp - lastUpdateCircle1 > updateTime) {
+    lastUpdateCircle1 = timestamp;
+    colorF = colorF === "green" ? "blue" : "green";
   }
 
+  if(timestamp - lastUpdateCircle2 > updateTime2){
+    lastUpdateCircle2 = timestamp;
+    if
+
+  }
 }
 
 function render() {
@@ -65,12 +60,16 @@ function render() {
 let lastRender = 0;
 function draw(timestamp) {
   const progress = timestamp - lastRender;
+  if (progress < 20) {
+    requestAnimationFrame(draw);
+    return;
+  }
 
-  update(progress);
+  update(timestamp);
   render();
 
   lastRender = timestamp;
   requestAnimationFrame(draw);
 }
 
-requestAnimationFrame(draw)
+requestAnimationFrame(draw);
