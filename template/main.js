@@ -8,8 +8,10 @@ const width = canvas.width;
 const height = canvas.height;
 
 function clearCanvas() {
-  ctx.clearRect(0, 0, canvas.width, canvas.height);
+  ctx.clearRect(0, 0, width, height);
 }
+
+const objects = [];
 
 function update() {}
 
