@@ -100,12 +100,16 @@ class Ball {
   }
 
   update(timestamp) {
-    if (![...stairs, floor].some((stair) => colliderBallRect(this, stair))) {
+    const isColliding = [...stairs, floor].some((stair) =>
+      colliderBallRect(this, stair)
+    );
+
+    if (!isColliding) {
       this.y = this.y - BallConstants.speedY;
     }
 
     if (this.x - this.radius > 0) {
-      this.x += BallConstants.speedX;
+      this.x += !isColliding ? BallConstants.speedX / 2 : BallConstants.speedX;
     }
   }
 }
