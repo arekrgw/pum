@@ -100,15 +100,10 @@ class Ball {
   }
 
   update(timestamp) {
-    let rect = [...stairs]
-      .reverse()
-      .find((stair) => this.x + this.radius >= stair.x);
-    if (!rect) {
-      rect = floor;
-    }
-    if (!collider(this, rect)) {
+    if (![...stairs, floor].some((stair) => collider(this, stair))) {
       this.y = this.y - BallConstants.speedY;
     }
+
     if (this.x - this.radius > 0) {
       this.x += BallConstants.speedX;
     }
