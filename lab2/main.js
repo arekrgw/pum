@@ -11,7 +11,7 @@ function clearCanvas() {
   ctx.clearRect(0, 0, width, height);
 }
 
-function collider(circle, rect) {
+function colliderBallRect(circle, rect) {
   const distX = Math.abs(circle.x - rect.x - rect.width / 2);
   const distY = Math.abs(circle.y - rect.y - rect.height / 2);
 
@@ -100,7 +100,7 @@ class Ball {
   }
 
   update(timestamp) {
-    if (![...stairs, floor].some((stair) => collider(this, stair))) {
+    if (![...stairs, floor].some((stair) => colliderBallRect(this, stair))) {
       this.y = this.y - BallConstants.speedY;
     }
 
