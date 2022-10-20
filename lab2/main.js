@@ -12,15 +12,6 @@ function clearCanvas() {
 }
 
 function collider(circle, rect) {
-  console.log(
-    circle.x,
-    circle.y,
-    rect.x,
-    rect.y,
-    rect.width,
-    rect.height,
-    circle.radius
-  );
   const distX = Math.abs(circle.x - rect.x - rect.width / 2);
   const distY = Math.abs(circle.y - rect.y - rect.height / 2);
 
@@ -89,7 +80,7 @@ const BallConstants = {
     StairConstants.beginY -
     (StairConstants.maxStairs - 1) * StairConstants.height -
     30,
-  speedX: -1,
+  speedX: -0.5,
   speedY: -1,
 };
 
