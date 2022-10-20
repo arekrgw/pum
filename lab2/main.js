@@ -11,6 +11,38 @@ function clearCanvas() {
   ctx.clearRect(0, 0, width, height);
 }
 
+function collider(circle, rect) {
+  console.log(
+    circle.x,
+    circle.y,
+    rect.x,
+    rect.y,
+    rect.width,
+    rect.height,
+    circle.radius
+  );
+  const distX = Math.abs(circle.x - rect.x - rect.width / 2);
+  const distY = Math.abs(circle.y - rect.y - rect.height / 2);
+
+  if (distX > rect.width / 2 + circle.radius) {
+    return false;
+  }
+  if (distY > rect.height / 2 + circle.radius) {
+    return false;
+  }
+
+  if (distX <= rect.width / 2) {
+    return true;
+  }
+  if (distY <= rect.height / 2) {
+    return true;
+  }
+
+  const dx = distX - rect.width / 2;
+  const dy = distY - rect.height / 2;
+  return dx * dx + dy * dy <= circle.radius * circle.radius;
+}
+
 class Floor {
   x = 0;
   y = height - 50;
@@ -57,11 +89,13 @@ const BallConstants = {
     StairConstants.beginY -
     (StairConstants.maxStairs - 1) * StairConstants.height -
     30,
-  speed: -1,
+  speedX: -1,
+  speedY: -1,
 };
 
 class Ball {
   color = "#ff0000";
+  radius = BallConstants.radius;
 
   constructor(x, y) {
     this.x = x;
@@ -75,7 +109,10 @@ class Ball {
   }
 
   update(timestamp) {
-    this.x += BallConstants.speed;
+    if (stairs.every((stair) => collider(this, stair))) {
+      this.y = this.y - BallConstants.speedY;
+    }
+    this.x += BallConstants.speedX;
   }
 }
 class Stair {
@@ -96,8 +133,6 @@ class Stair {
     ctx.fill();
   }
 }
-
-const beginY = height - (StairConstants.height + 50);
 
 const stairs = new Array(5)
   .fill(0)
