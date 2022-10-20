@@ -109,10 +109,18 @@ class Ball {
   }
 
   update(timestamp) {
-    if (stairs.every((stair) => collider(this, stair))) {
+    let rect = [...stairs]
+      .reverse()
+      .find((stair) => this.x + this.radius >= stair.x);
+    if (!rect) {
+      rect = floor;
+    }
+    if (!collider(this, rect)) {
       this.y = this.y - BallConstants.speedY;
     }
-    this.x += BallConstants.speedX;
+    if (this.x - this.radius > 0) {
+      this.x += BallConstants.speedX;
+    }
   }
 }
 class Stair {
