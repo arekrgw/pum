@@ -11,12 +11,6 @@ function clearCanvas() {
   ctx.clearRect(0, 0, width, height);
 }
 
-class Ball {
-  color = "#ff0000";
-
-  draw() {}
-}
-
 class Floor {
   x = 0;
   y = height - 50;
@@ -36,6 +30,8 @@ const floor = new Floor();
 
 const StairConstants = {
   height: 50,
+  beginX: 150,
+  beginY: height - 100,
   width: 100,
   stairsToRender: 0,
   lastUpdated: 0,
@@ -50,6 +46,38 @@ const StairConstants = {
     }
   },
 };
+
+const BallConstants = {
+  radius: 30,
+  beginX:
+    StairConstants.beginX +
+    StairConstants.maxStairs * StairConstants.width -
+    StairConstants.width / 2,
+  beginY:
+    StairConstants.beginY -
+    (StairConstants.maxStairs - 1) * StairConstants.height -
+    30,
+  speed: -1,
+};
+
+class Ball {
+  color = "#ff0000";
+
+  constructor(x, y) {
+    this.x = x;
+    this.y = y;
+  }
+  draw() {
+    ctx.beginPath();
+    ctx.arc(this.x, this.y, BallConstants.radius, 0, 2 * Math.PI);
+    ctx.fillStyle = this.color;
+    ctx.fill();
+  }
+
+  update(timestamp) {
+    this.x += BallConstants.speed;
+  }
+}
 class Stair {
   color = "brown";
   height = StairConstants.height;
@@ -69,7 +97,6 @@ class Stair {
   }
 }
 
-const beginX = 150;
 const beginY = height - (StairConstants.height + 50);
 
 const stairs = new Array(5)
@@ -77,22 +104,33 @@ const stairs = new Array(5)
   .map(
     (_, i) =>
       new Stair(
-        beginX + i * StairConstants.width,
-        beginY - i * StairConstants.height
+        StairConstants.beginX + i * StairConstants.width,
+        StairConstants.beginY - i * StairConstants.height
       )
   );
+
+const ball = new Ball(BallConstants.beginX, BallConstants.beginY);
 
 let lastRender;
 function update(timestamp) {
   StairConstants.checkStairsToRender(timestamp);
+
+  if (StairConstants.stairsToRender === StairConstants.maxStairs) {
+    ball.update();
+  }
 }
 
 function render() {
+  clearCanvas();
   floor.draw();
   stairs
     .slice()
     .slice(0, StairConstants.stairsToRender + 1)
     .forEach((stair) => stair.draw());
+
+  if (StairConstants.stairsToRender === StairConstants.maxStairs) {
+    ball.draw();
+  }
 }
 
 function draw(timestamp) {
