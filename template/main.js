@@ -13,16 +13,12 @@ function clearCanvas() {
 
 class Ball {
   color = "#ff0000";
-  x = 20;
-  y =
 
-  draw() {
-
-  }
+  draw() {}
 }
 
 class Floor {
-  x = 0
+  x = 0;
   y = height - 50;
   width = width;
   height = 50;
@@ -36,18 +32,18 @@ class Floor {
   }
 }
 
-const floor
+const floor = new Floor();
 class Stair {
-
   draw() {
     // draw stairs on canvas
-
   }
 }
 
 function update() {}
 
-function render() {}
+function render() {
+  floor.draw();
+}
 
 let lastRender;
 function draw(timestamp) {
