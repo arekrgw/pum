@@ -11,6 +11,40 @@ function clearCanvas() {
   ctx.clearRect(0, 0, width, height);
 }
 
+class Ball {
+  color = "#ff0000";
+  x = 20;
+  y =
+
+  draw() {
+
+  }
+}
+
+class Floor {
+  x = 0
+  y = height - 50;
+  width = width;
+  height = 50;
+  color = "#00ff00";
+
+  draw() {
+    ctx.beginPath();
+    ctx.rect(this.x, this.y, this.width, this.height);
+    ctx.fillStyle = this.color;
+    ctx.fill();
+  }
+}
+
+const floor
+class Stair {
+
+  draw() {
+    // draw stairs on canvas
+
+  }
+}
+
 function update() {}
 
 function render() {}
