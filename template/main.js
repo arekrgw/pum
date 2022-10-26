@@ -11,38 +11,14 @@ function clearCanvas() {
   ctx.clearRect(0, 0, width, height);
 }
 
-class Ball {
-  color = "#ff0000";
+const actors = [];
 
-  draw() {}
-}
+function setup() {}
 
-class Floor {
-  x = 0;
-  y = height - 50;
-  width = width;
-  height = 50;
-  color = "#00ff00";
+function update(timestamp) {}
 
-  draw() {
-    ctx.beginPath();
-    ctx.rect(this.x, this.y, this.width, this.height);
-    ctx.fillStyle = this.color;
-    ctx.fill();
-  }
-}
+function render(timestamp) {
 
-const floor = new Floor();
-class Stair {
-  draw() {
-    // draw stairs on canvas
-  }
-}
-
-function update() {}
-
-function render() {
-  floor.draw();
 }
 
 let lastRender;
@@ -54,9 +30,10 @@ function draw(timestamp) {
 
   lastRender = timestamp;
   update(timestamp);
-  render();
+  render(timestamp);
 
   requestAnimationFrame(draw);
 }
 
+setup();
 requestAnimationFrame(draw);
