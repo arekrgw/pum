@@ -1,24 +1,18 @@
-const canvas = document.querySelector("canvas");
-
-const ctx = canvas.getContext("2d");
-
-const centerX = canvas.width / 2;
-const centerY = canvas.height / 2;
-const width = canvas.width;
-const height = canvas.height;
-
 function clearCanvas() {
   ctx.clearRect(0, 0, width, height);
 }
 
-const actors = [];
+function setup() {
+  actors.push(new Ball(centerX, centerY), new Ball(centerX + 100, centerY));
+}
 
-function setup() {}
-
-function update(timestamp) {}
+function update(timestamp) {
+  actors.forEach((actor) => actor.update(timestamp));
+}
 
 function render(timestamp) {
-
+  clearCanvas();
+  actors.forEach((actor) => actor.draw(timestamp));
 }
 
 let lastRender;
