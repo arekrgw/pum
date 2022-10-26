@@ -1,3 +1,11 @@
+// https://github.com/jriecken/sat-js
+const C = SAT.Circle;
+const V = SAT.Vector;
+const P = SAT.Polygon;
+const cCC = SAT.testCircleCircle;
+const cCP = SAT.testCirclePolygon;
+const cPC = SAT.testPolygonCircle;
+
 const canvas = document.querySelector("canvas");
 const ctx = canvas.getContext("2d");
 
@@ -6,69 +14,64 @@ const centerY = canvas.height / 2;
 const width = canvas.width;
 const height = canvas.height;
 
-function collCR(circle, rect) {
-  const distX = Math.abs(circle.x - rect.x - rect.width / 2);
-  const distY = Math.abs(circle.y - rect.y - rect.height / 2);
-
-  if (distX > rect.width / 2 + circle.radius) {
-    return false;
-  }
-  if (distY > rect.height / 2 + circle.radius) {
-    return false;
-  }
-
-  if (distX <= rect.width / 2) {
-    return true;
-  }
-  if (distY <= rect.height / 2) {
-    return true;
-  }
-
-  const dx = distX - rect.width / 2;
-  const dy = distY - rect.height / 2;
-  return dx * dx + dy * dy <= circle.radius * circle.radius;
-}
-
-function collRR() {
-  if (
-    rect1.x < rect2.x + rect2.w &&
-    rect1.x + rect1.w > rect2.x &&
-    rect1.y < rect2.y + rect2.h &&
-    rect1.h + rect1.y > rect2.y
-  ) {
-    return true;
-  }
-
-  return false;
-}
-
 const actors = [];
 class Actor {
-  constructor(name) {
+  constructor(object, name) {
+    this.object = object;
     this.name = name;
   }
-  actors(name = null) {
-    return actors.filter((actor) => actor !== this && name !== actor.name);
+
+  actors(nameRegexp = null) {
+    return actors.filter(
+      (actor) =>
+        actor !== this && this.turnIntoRegexp(nameRegexp).test(actor.name)
+    );
   }
+
+  turnIntoRegexp(name) {
+    if (typeof name === "string") {
+      return new RegExp(`^${name}$`);
+    }
+    return name;
+  }
+
+  iam(nameRegexp) {
+    return this.turnIntoRegexp(nameRegexp).test(this.name);
+  }
+
   draw(timestamp) {}
   update(timestamp) {}
 }
 
+// user defined code
+
 class Ball extends Actor {
   static radius = 30;
+  color = "red";
 
-  constructor(x, y) {
-    super("Ball");
-    this.x = x;
-    this.y = y;
+  constructor(object, name) {
+    super(object, name);
+  }
+
+  get coords() {
+    return {
+      x: this.object.pos.x,
+      y: this.object.pos.y,
+      r: this.object.r,
+    };
   }
 
   draw(timestamp) {
+    const { x, y, r } = this.coords;
     ctx.beginPath();
-    ctx.arc(this.x, this.y, Ball.radius, 0, 2 * Math.PI);
-    ctx.fillStyle = "red";
+    ctx.arc(x, y, r, 0, 2 * Math.PI);
+    ctx.fillStyle = this.color;
     ctx.fill();
   }
 
-  update(timestamp) {}
+  update(timestamp) {
+    if (this.iam(/ball3/)) {
+      console.log("ball");
+    }
+  }
 }
