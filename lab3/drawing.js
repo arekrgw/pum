@@ -65,6 +65,9 @@ class Player extends Actor {
   }
 
   move(dir) {
+    const { x } = this.coords;
+    if (dir > 0 && x + dir + 30 > width) return;
+    if (dir < 0 && x + dir < 0) return;
     this.object.pos.add(new V(dir, 0));
   }
 
