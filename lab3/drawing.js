@@ -140,8 +140,8 @@ document.addEventListener("keydown", (e) => {
     player.move(6);
     Player.moved = true;
   }
-
-  if (e.key === "Space") {
+  console.log(e.key)
+  if (e.key === " ") {
     console.log("space");
   }
   // console.log(e.key);
