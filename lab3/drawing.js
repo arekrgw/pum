@@ -91,6 +91,7 @@ class Ball extends Actor {
 
   constructor(object, name) {
     super(object, name);
+    this.createdAt = Date.now();
   }
 
   get coords() {
@@ -110,6 +111,11 @@ class Ball extends Actor {
   }
 
   update(timestamp) {
+    if (this.name === "ball") {
+      if (Date.now() - this.createdAt > 10000) {
+        actors.splice(actors.indexOf(this), 1);
+      }
+    }
     if (this.name === "bullet") {
       this.object.pos.add(new V(0, -5));
       if (this.object.pos.y < 0) {
