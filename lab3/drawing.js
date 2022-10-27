@@ -121,6 +121,15 @@ class Ball extends Actor {
       if (this.object.pos.y < 0) {
         actors.splice(actors.indexOf(this), 1);
       }
+
+      const balls = this.actors("ball");
+      for (let i = 0; i < balls.length; i++) {
+        const ball = balls[i];
+        if (cCC(this.object, ball.object)) {
+          actors.splice(actors.indexOf(ball), 1);
+          actors.splice(actors.indexOf(this), 1);
+        }
+      }
     }
   }
 }
@@ -170,6 +179,4 @@ document.addEventListener("keydown", (e) => {
   if (e.key === " ") {
     spawnMovingBall();
   }
-  // console.log(e.key);
-  // const { x, y, w, h } = player.coords;
 });
