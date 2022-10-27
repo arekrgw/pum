@@ -119,7 +119,7 @@ class Ball extends Actor {
       }
     }
     if (this.name === "bullet") {
-      this.object.pos.add(new V(0, -5));
+      this.object.pos.add(new V(0, -8));
       if (this.object.pos.y < 0) {
         actors.splice(actors.indexOf(this), 1);
       }
