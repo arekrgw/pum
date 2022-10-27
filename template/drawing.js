@@ -2,6 +2,7 @@
 const C = SAT.Circle;
 const V = SAT.Vector;
 const P = SAT.Polygon;
+const B = SAT.Box;
 const cCC = SAT.testCircleCircle;
 const cCP = SAT.testCirclePolygon;
 const cPC = SAT.testPolygonCircle;
