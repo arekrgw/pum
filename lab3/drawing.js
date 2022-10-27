@@ -86,6 +86,8 @@ class Player extends Actor {
 class Ball extends Actor {
   static radius = 20;
   color = "red";
+  bullet = "green"
+  static bulletRadius = 10;
 
   constructor(object, name) {
     super(object, name);
@@ -127,6 +129,13 @@ const randomBall = () => {
 
 randomBall();
 
+const spawnMovingBall = () => {
+  const player = actors.find((actor) => actor.iam("player"));
+  const { x, y } = player.coords;
+  const ball = new Ball(new C(new V(x + 15, y - Ball.bulletRadius), Ball.bulletRadius), "bullet");
+  actors.push(ball);
+};
+
 document.addEventListener("keydown", (e) => {
   if (Player.moved) return;
 
@@ -140,9 +149,10 @@ document.addEventListener("keydown", (e) => {
     player.move(6);
     Player.moved = true;
   }
-  console.log(e.key)
+
+  console.log(e.key);
   if (e.key === " ") {
-    console.log("space");
+    spawnMovingBall();
   }
   // console.log(e.key);
   // const { x, y, w, h } = player.coords;
