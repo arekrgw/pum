@@ -5,6 +5,7 @@ const P = SAT.Polygon;
 const cCC = SAT.testCircleCircle;
 const cCP = SAT.testCirclePolygon;
 const cPC = SAT.testPolygonCircle;
+const cPP = SAT.testPolygonPolygon;
 
 const canvas = document.querySelector("canvas");
 const ctx = canvas.getContext("2d");
