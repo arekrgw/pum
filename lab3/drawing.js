@@ -58,20 +58,20 @@ class Player extends Actor {
     return {
       x: this.object.pos.x,
       y: this.object.pos.y,
-      r: this.object.r,
+      w: this.object.w,
+      h: this.object.h,
     };
   }
 
   draw(timestamp) {
-    const { x, y, r } = this.coords;
-    console.log(this.coords)
+    const { x, y, w, h } = this.coords;
+    ctx.beginPath();
+    ctx.fillStyle = this.color;
+    ctx.fillRect(x, y, w, h);
+    ctx.closePath();
   }
 
-  update(timestamp) {
-    if (this.iam(/ball3/)) {
-      console.log("ball");
-    }
-  }
+  update(timestamp) {}
 }
 
 class Ball extends Actor {
@@ -104,3 +104,10 @@ class Ball extends Actor {
     }
   }
 }
+
+
+document.addEventListener("keydown", (e) => {
+  const player = actors.find((actor) => actor.iam(/player/));
+  console.log(e.key);
+  const { x, y, w, h } = player.coords;
+})
