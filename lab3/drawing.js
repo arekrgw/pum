@@ -77,6 +77,7 @@ class Player extends Actor {
     ctx.fillStyle = this.color;
     ctx.fillRect(x, y, w, h);
     ctx.closePath();
+    Player.moved = false;
   }
 
   update(timestamp) {}
@@ -115,14 +116,11 @@ const randomY = () => Math.floor((Math.random() * height) / 2);
 
 const randomBall = () => {
   let x = randomX();
-  if(x - 20 < 0) x = 20;
-  if(x + 20 > width) x = width - 20;
+  if (x - 20 < 0) x = 20;
+  if (x + 20 > width) x = width - 20;
   let y = randomY();
-  if(y - 20 < 0) y = 20;
-  const ball = new Ball(
-    new C(new V(x, y), Ball.radius),
-    "ball"
-  );
+  if (y - 20 < 0) y = 20;
+  const ball = new Ball(new C(new V(x, y), Ball.radius), "ball");
   actors.push(ball);
   setTimeout(randomBall, randomTime());
 };
@@ -136,9 +134,15 @@ document.addEventListener("keydown", (e) => {
 
   if (e.key === "ArrowLeft") {
     player.move(-6);
+    Player.moved = true;
   }
   if (e.key === "ArrowRight") {
     player.move(6);
+    Player.moved = true;
+  }
+
+  if (e.key === "Space") {
+    console.log("space");
   }
   // console.log(e.key);
   // const { x, y, w, h } = player.coords;
