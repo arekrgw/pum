@@ -86,7 +86,7 @@ class Player extends Actor {
 class Ball extends Actor {
   static radius = 20;
   color = "red";
-  bullet = "green"
+  bullet = "green";
   static bulletRadius = 10;
 
   constructor(object, name) {
@@ -105,11 +105,18 @@ class Ball extends Actor {
     const { x, y, r } = this.coords;
     ctx.beginPath();
     ctx.arc(x, y, r, 0, 2 * Math.PI);
-    ctx.fillStyle = this.color;
+    ctx.fillStyle = this.name === "bullet" ? this.bullet : this.color;
     ctx.fill();
   }
 
-  update(timestamp) {}
+  update(timestamp) {
+    if (this.name === "bullet") {
+      this.object.pos.add(new V(0, -5));
+      if (this.object.pos.y < 0) {
+        actors.splice(actors.indexOf(this), 1);
+      }
+    }
+  }
 }
 
 const randomTime = () => Math.floor(Math.random() * 1000) + 2000;
@@ -132,7 +139,10 @@ randomBall();
 const spawnMovingBall = () => {
   const player = actors.find((actor) => actor.iam("player"));
   const { x, y } = player.coords;
-  const ball = new Ball(new C(new V(x + 15, y - Ball.bulletRadius), Ball.bulletRadius), "bullet");
+  const ball = new Ball(
+    new C(new V(x + 15, y - Ball.bulletRadius), Ball.bulletRadius),
+    "bullet"
+  );
   actors.push(ball);
 };
 
