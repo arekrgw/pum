@@ -83,7 +83,7 @@ class Player extends Actor {
 }
 
 class Ball extends Actor {
-  static radius = 30;
+  static radius = 20;
   color = "red";
 
   constructor(object, name) {
@@ -106,12 +106,28 @@ class Ball extends Actor {
     ctx.fill();
   }
 
-  update(timestamp) {
-    if (this.iam(/ball3/)) {
-      console.log("ball");
-    }
-  }
+  update(timestamp) {}
 }
+
+const randomTime = () => Math.floor(Math.random() * 1000) + 2000;
+const randomX = () => Math.floor(Math.random() * width);
+const randomY = () => Math.floor((Math.random() * height) / 2);
+
+const randomBall = () => {
+  let x = randomX();
+  if(x - 20 < 0) x = 20;
+  if(x + 20 > width) x = width - 20;
+  let y = randomY();
+  if(y - 20 < 0) y = 20;
+  const ball = new Ball(
+    new C(new V(x, y), Ball.radius),
+    "ball"
+  );
+  actors.push(ball);
+  setTimeout(randomBall, randomTime());
+};
+
+randomBall();
 
 document.addEventListener("keydown", (e) => {
   if (Player.moved) return;
