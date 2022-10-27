@@ -49,6 +49,7 @@ class Actor {
 
 class Player extends Actor {
   color = "blue";
+  static moved = false;
 
   constructor(object, name) {
     super(object, name);
@@ -61,6 +62,10 @@ class Player extends Actor {
       w: this.object.w,
       h: this.object.h,
     };
+  }
+
+  move(dir) {
+    this.object.pos.add(new V(dir, 0));
   }
 
   draw(timestamp) {
@@ -105,9 +110,17 @@ class Ball extends Actor {
   }
 }
 
-
 document.addEventListener("keydown", (e) => {
+  if (Player.moved) return;
+
   const player = actors.find((actor) => actor.iam(/player/));
-  console.log(e.key);
-  const { x, y, w, h } = player.coords;
-})
+
+  if (e.key === "ArrowLeft") {
+    player.move(-6);
+  }
+  if (e.key === "ArrowRight") {
+    player.move(6);
+  }
+  // console.log(e.key);
+  // const { x, y, w, h } = player.coords;
+});
