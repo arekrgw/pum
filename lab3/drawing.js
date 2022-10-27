@@ -10,6 +10,7 @@ const cPP = SAT.testPolygonPolygon;
 
 const canvas = document.querySelector("canvas");
 const ctx = canvas.getContext("2d");
+const score = document.querySelector("#score");
 
 const centerX = canvas.width / 2;
 const centerY = canvas.height / 2;
@@ -50,6 +51,7 @@ class Actor {
 class Player extends Actor {
   color = "blue";
   static moved = false;
+  static score = 0;
 
   constructor(object, name) {
     super(object, name);
@@ -128,13 +130,15 @@ class Ball extends Actor {
         if (cCC(this.object, ball.object)) {
           actors.splice(actors.indexOf(ball), 1);
           actors.splice(actors.indexOf(this), 1);
+          Player.score += 1;
+          score.innerText = Player.score;
         }
       }
     }
   }
 }
 
-const randomTime = () => Math.floor(Math.random() * 1000) + 2000;
+const randomTime = () => Math.floor(Math.random() * 1000) + 1500;
 const randomX = () => Math.floor(Math.random() * width);
 const randomY = () => Math.floor((Math.random() * height) / 2);
 
@@ -167,11 +171,11 @@ document.addEventListener("keydown", (e) => {
   const player = actors.find((actor) => actor.iam(/player/));
 
   if (e.key === "ArrowLeft") {
-    player.move(-6);
+    player.move(-8);
     Player.moved = true;
   }
   if (e.key === "ArrowRight") {
-    player.move(6);
+    player.move(8);
     Player.moved = true;
   }
 
