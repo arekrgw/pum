@@ -86,6 +86,7 @@ class Player extends Actor {
 }
 
 class Ball extends Actor {
+  static lastShot = performance.now();
   static radius = 20;
   color = "red";
   bullet = "green";
@@ -93,7 +94,7 @@ class Ball extends Actor {
 
   constructor(object, name) {
     super(object, name);
-    this.createdAt = Date.now();
+    this.createdAt = performance.now();
   }
 
   get coords() {
@@ -114,7 +115,7 @@ class Ball extends Actor {
 
   update(timestamp) {
     if (this.name === "ball") {
-      if (Date.now() - this.createdAt > 10000) {
+      if (performance.now() - this.createdAt > 10000) {
         actors.splice(actors.indexOf(this), 1);
       }
     }
@@ -156,6 +157,7 @@ const randomBall = () => {
 randomBall();
 
 const spawnMovingBall = () => {
+  if(Ball.lastShot + 200 > performance.now()) return;
   const player = actors.find((actor) => actor.iam("player"));
   const { x, y } = player.coords;
   const ball = new Ball(
@@ -163,6 +165,7 @@ const spawnMovingBall = () => {
     "bullet"
   );
   actors.push(ball);
+  Ball.lastShot = performance.now();
 };
 
 document.addEventListener("keydown", (e) => {
@@ -179,7 +182,6 @@ document.addEventListener("keydown", (e) => {
     Player.moved = true;
   }
 
-  console.log(e.key);
   if (e.key === " ") {
     spawnMovingBall();
   }
