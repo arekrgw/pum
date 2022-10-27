@@ -47,6 +47,33 @@ class Actor {
 
 // user defined code
 
+class Player extends Actor {
+  color = "blue";
+
+  constructor(object, name) {
+    super(object, name);
+  }
+
+  get coords() {
+    return {
+      x: this.object.pos.x,
+      y: this.object.pos.y,
+      r: this.object.r,
+    };
+  }
+
+  draw(timestamp) {
+    const { x, y, r } = this.coords;
+    console.log(this.coords)
+  }
+
+  update(timestamp) {
+    if (this.iam(/ball3/)) {
+      console.log("ball");
+    }
+  }
+}
+
 class Ball extends Actor {
   static radius = 30;
   color = "red";

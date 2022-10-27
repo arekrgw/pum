@@ -4,8 +4,7 @@ function clearCanvas() {
 
 function setup() {
   actors.push(
-    new Ball(new C(new V(centerX, centerY), Ball.radius), "ball1"),
-    new Ball(new C(new V(centerX + 100, centerY), Ball.radius), "ball2")
+    new Player(new B(new V(centerX - 15, height - 30), 30, 30), "player")
   );
 }
 
