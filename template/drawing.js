@@ -66,7 +66,6 @@ class Ball extends Actor {
 
   draw(timestamp) {
     const { x, y, r } = this.coords;
-    console.log(this.coords);
     ctx.beginPath();
     ctx.arc(x, y, r, 0, 2 * Math.PI);
     ctx.fillStyle = this.color;
