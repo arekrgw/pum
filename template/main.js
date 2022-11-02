@@ -3,10 +3,12 @@ function clearCanvas() {
 }
 
 function setup() {
-  actors.push(
-    new Ball(new C(new V(centerX, centerY), Ball.radius), "ball1"),
-    new Ball(new C(new V(centerX + 100, centerY), Ball.radius), "ball2")
+  const b = new Ball(
+    new C(new V(), Ball.radius),
+    new V(centerX, centerY),
+    "ball1"
   );
+  actors.push(b);
 }
 
 function update(timestamp) {

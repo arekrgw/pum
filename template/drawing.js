@@ -18,8 +18,9 @@ const height = canvas.height;
 
 const actors = [];
 class Actor {
-  constructor(object, name) {
+  constructor(object, offset, name) {
     this.object = object;
+    this.object.setOffset(offset);
     this.name = name;
   }
 
@@ -51,20 +52,21 @@ class Ball extends Actor {
   static radius = 30;
   color = "red";
 
-  constructor(object, name) {
-    super(object, name);
-  }
-
   get coords() {
     return {
-      x: this.object.pos.x,
-      y: this.object.pos.y,
+      x: this.object.offset.x,
+      y: this.object.offset.y,
       r: this.object.r,
     };
   }
 
+  constructor(object, offset, name) {
+    super(object, offset, name);
+  }
+
   draw(timestamp) {
     const { x, y, r } = this.coords;
+    console.log(this.coords);
     ctx.beginPath();
     ctx.arc(x, y, r, 0, 2 * Math.PI);
     ctx.fillStyle = this.color;
