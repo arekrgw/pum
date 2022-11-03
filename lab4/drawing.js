@@ -231,7 +231,7 @@ class Car {
   }
 }
 
-const randomTime = () => Math.floor(Math.random() * 1000) + 1500;
+const randomTime = () => Math.floor(Math.random() * 1000) + 500;
 const randomX = () => Math.floor(Math.random() * width);
 const randomY = () => Math.floor((Math.random() * height) / 2);
 
