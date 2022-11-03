@@ -89,11 +89,22 @@ class Road {
   constructor(name) {
     this.name = name;
     this.stripes = [];
+    this.left = [];
+    this.right = [];
     for (let i = -1; i < Road.h / Road.stripeHeight; i++) {
-      console.log(i, Math.abs(i % 2));
       this.stripes.push({
         y: i * Road.stripeHeight,
         color: Math.abs(i % 2) ? "white" : "gray",
+      });
+
+      this.left.push({
+        y: i * Road.stripeHeight,
+        color: Math.abs(i % 2) ? "red" : "white",
+      });
+
+      this.right.push({
+        y: i * Road.stripeHeight,
+        color: Math.abs(i % 2) ? "red" : "white",
       });
     }
   }
@@ -111,11 +122,36 @@ class Road {
       ctx.fillStyle = stripe.color;
       ctx.fill();
     });
+    this.left.forEach((stripe) => {
+      ctx.beginPath();
+      ctx.rect(x - 10, stripe.y, 10, Road.stripeHeight);
+      ctx.fillStyle = stripe.color;
+      ctx.fill();
+    });
+    this.right.forEach((stripe) => {
+      ctx.beginPath();
+      ctx.rect(w + x, stripe.y, 10, Road.stripeHeight);
+      ctx.fillStyle = stripe.color;
+      ctx.fill();
+    });
   }
 
   update(timestamp) {
+    const speed = 5;
     this.stripes.forEach((stripe) => {
-      stripe.y += 2;
+      stripe.y += speed;
+      if (stripe.y > Road.h) {
+        stripe.y = -Road.stripeHeight;
+      }
+    });
+    this.left.forEach((stripe) => {
+      stripe.y += speed;
+      if (stripe.y > Road.h) {
+        stripe.y = -Road.stripeHeight;
+      }
+    });
+    this.right.forEach((stripe) => {
+      stripe.y += speed;
       if (stripe.y > Road.h) {
         stripe.y = -Road.stripeHeight;
       }
@@ -149,4 +185,5 @@ class Car extends Actor {
     this.color = color;
     super(object, offset, name);
   }
+
 }
