@@ -84,15 +84,16 @@ class Road {
   static y = 0;
   static h = height;
   static w = width - Road.x * 2;
-  static stripeHeight = 50;
+  static stripeHeight = 40;
 
   constructor(name) {
     this.name = name;
     this.stripes = [];
     for (let i = -1; i < Road.h / Road.stripeHeight; i++) {
+      console.log(i, Math.abs(i % 2));
       this.stripes.push({
         y: i * Road.stripeHeight,
-        color: i % 2 ? "white" : "gray",
+        color: Math.abs(i % 2) ? "white" : "gray",
       });
     }
   }
@@ -114,7 +115,7 @@ class Road {
 
   update(timestamp) {
     this.stripes.forEach((stripe) => {
-      stripe.y += 1;
+      stripe.y += 2;
       if (stripe.y > Road.h) {
         stripe.y = -Road.stripeHeight;
       }
