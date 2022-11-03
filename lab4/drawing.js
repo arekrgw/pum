@@ -181,7 +181,7 @@ class Grass {
 }
 
 class Car {
-  constructor(name, color) {
+  constructor(name, color, x) {
     if (name === "plr") {
       this.color = color;
       this.name = name;
@@ -193,7 +193,19 @@ class Car {
       ]);
 
       this.object.setOffset(new V(centerX - 20, height - 70));
+      return;
     }
+
+    this.color = color;
+    this.name = name;
+    this.object = new P(new V(), [
+      new V(),
+      new V(40, 0),
+      new V(40, 60),
+      new V(0, 60),
+    ]);
+
+    this.object.setOffset(new V(x, -60));
   }
 
   draw(timestamp) {
@@ -212,9 +224,26 @@ class Car {
     ctx.fill();
   }
 
-  update(timestamp) {}
+  update(timestamp) {
+    if (this.name !== "plr") {
+      this.object.translate(0, 5);
+    }
+  }
 }
 
+const randomTime = () => Math.floor(Math.random() * 1000) + 1500;
+const randomX = () => Math.floor(Math.random() * width);
+const randomY = () => Math.floor((Math.random() * height) / 2);
+
+const randomCar = () => {
+  let x = randomX();
+  if (x > width - 40) x = width - 40;
+  const car = new Car("car", "blue", x);
+  actors.push(car);
+  setTimeout(randomCar, randomTime());
+};
+
+randomCar();
 document.addEventListener("keydown", (e) => {
   if (e.key === "ArrowLeft") {
     const a = actors.find((a) => a.name === "plr");
