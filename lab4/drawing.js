@@ -182,15 +182,18 @@ class Grass {
 
 class Car {
   constructor(name, color) {
-    this.color = color;
-    this.object = new P(new V(), [
-      new V(0, 0),
-      new V(0, 30),
-      new V(-30, 30),
-      new V(-30, 0),
-    ]);
+    if (name === "plr") {
+      this.color = color;
+      this.name = name;
+      this.object = new P(new V(), [
+        new V(),
+        new V(40, 0),
+        new V(40, 60),
+        new V(0, 60),
+      ]);
 
-    this.object.setOffset(new V(200, 200));
+      this.object.setOffset(new V(centerX - 20, height - 70));
+    }
   }
 
   draw(timestamp) {
@@ -207,10 +210,6 @@ class Car {
 
     ctx.closePath();
     ctx.fill();
-    // ctx.beginPath();
-    // ctx.rect(x, y, 30, 30);
-    // ctx.fillStyle = this.color;
-    // ctx.fill();
   }
 
   update(timestamp) {}
