@@ -214,3 +214,20 @@ class Car {
 
   update(timestamp) {}
 }
+
+document.addEventListener("keydown", (e) => {
+  if (e.key === "ArrowLeft") {
+    const a = actors.find((a) => a.name === "plr");
+
+    if (a.object.calcPoints[0].x > Road.x) {
+      a.object.translate(-10, 0);
+    }
+  }
+  if (e.key === "ArrowRight") {
+    const a = actors.find((a) => a.name === "plr");
+
+    if (a.object.calcPoints[1].x < Road.x + Road.w) {
+      a.object.translate(10, 0);
+    }
+  }
+});
