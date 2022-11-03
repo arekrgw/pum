@@ -6,7 +6,9 @@ function setup() {
   const grass = new Grass("grass");
   const road = new Road("road");
 
-  actors.push(grass, road);
+  const player = new Car("plr", "pink");
+
+  actors.push(grass, road, player);
 }
 
 function update(timestamp) {

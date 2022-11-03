@@ -180,10 +180,38 @@ class Grass {
   update(timestamp) {}
 }
 
-class Car extends Actor {
+class Car {
   constructor(name, color) {
     this.color = color;
-    super(object, offset, name);
+    this.object = new P(new V(), [
+      new V(0, 0),
+      new V(0, 30),
+      new V(-30, 30),
+      new V(-30, 0),
+    ]);
+
+    this.object.setOffset(new V(200, 200));
   }
 
+  draw(timestamp) {
+    ctx.fillStyle = this.color;
+    ctx.beginPath();
+
+    this.object.calcPoints.forEach(({ x, y }, i) => {
+      if (i === 0) {
+        ctx.moveTo(x, y);
+        return;
+      }
+      ctx.lineTo(x, y);
+    });
+
+    ctx.closePath();
+    ctx.fill();
+    // ctx.beginPath();
+    // ctx.rect(x, y, 30, 30);
+    // ctx.fillStyle = this.color;
+    // ctx.fill();
+  }
+
+  update(timestamp) {}
 }
