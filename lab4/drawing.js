@@ -84,9 +84,17 @@ class Road {
   static y = 0;
   static h = height;
   static w = width - Road.x * 2;
+  static stripeHeight = 50;
 
   constructor(name) {
     this.name = name;
+    this.stripes = [];
+    for (let i = -1; i < Road.h / Road.stripeHeight; i++) {
+      this.stripes.push({
+        y: i * Road.stripeHeight,
+        color: i % 2 ? "white" : "gray",
+      });
+    }
   }
 
   draw(timestamp) {
@@ -95,9 +103,23 @@ class Road {
     ctx.rect(x, y, w, h);
     ctx.fillStyle = "gray";
     ctx.fill();
+
+    this.stripes.forEach((stripe) => {
+      ctx.beginPath();
+      ctx.rect(centerX - 5, stripe.y, 10, Road.stripeHeight);
+      ctx.fillStyle = stripe.color;
+      ctx.fill();
+    });
   }
 
-  update(timestamp) {}
+  update(timestamp) {
+    this.stripes.forEach((stripe) => {
+      stripe.y += 1;
+      if (stripe.y > Road.h) {
+        stripe.y = -Road.stripeHeight;
+      }
+    });
+  }
 }
 
 class Grass {
