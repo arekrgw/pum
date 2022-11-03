@@ -3,13 +3,11 @@ function clearCanvas() {
 }
 
 function setup() {
-  const b = new Ball(
-    new C(new V(), Ball.radius),
-    new V(centerX, centerY),
-    "ball1"
-  );
+  const road = new Road("road");
 
-  actors.push(b);
+  road.object.setOffset(new V(width, height));
+
+  actors.push(road);
 }
 
 function update(timestamp) {

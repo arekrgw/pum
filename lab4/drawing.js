@@ -78,3 +78,48 @@ class Ball extends Actor {
     }
   }
 }
+
+class Road extends Actor {
+  static x = 200;
+  static y = 0;
+  static h = height;
+  static w = width - Road.x * 2;
+
+  constructor(name) {
+    this.name = name
+  }
+
+  draw(timestamp) {
+    const { x, y, w, h } = Road;
+    ctx.beginPath();
+    ctx.rect(x, y, w, h);
+    ctx.fillStyle = "gray";
+    ctx.fill();
+  }
+}
+
+class Grass {
+  static x = 0;
+  static y = 0;
+  static h = height;
+  static w = width;
+
+  constructor(name) {
+    this.name = name;
+  }
+
+  draw(timestamp) {
+    const { x, y, w, h } = Road;
+    ctx.beginPath();
+    ctx.rect(x, y, w, h);
+    ctx.fillStyle = "green";
+    ctx.fill();
+  }
+}
+
+class Car extends Actor {
+  constructor(name, color) {
+    this.color = color;
+    super(object, offset, name);
+  }
+}
