@@ -79,14 +79,14 @@ class Ball extends Actor {
   }
 }
 
-class Road extends Actor {
+class Road {
   static x = 200;
   static y = 0;
   static h = height;
   static w = width - Road.x * 2;
 
   constructor(name) {
-    this.name = name
+    this.name = name;
   }
 
   draw(timestamp) {
@@ -96,6 +96,8 @@ class Road extends Actor {
     ctx.fillStyle = "gray";
     ctx.fill();
   }
+
+  update(timestamp) {}
 }
 
 class Grass {
@@ -109,12 +111,14 @@ class Grass {
   }
 
   draw(timestamp) {
-    const { x, y, w, h } = Road;
+    const { x, y, w, h } = Grass;
     ctx.beginPath();
     ctx.rect(x, y, w, h);
     ctx.fillStyle = "green";
     ctx.fill();
   }
+
+  update(timestamp) {}
 }
 
 class Car extends Actor {

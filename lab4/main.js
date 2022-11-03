@@ -3,11 +3,10 @@ function clearCanvas() {
 }
 
 function setup() {
+  const grass = new Grass("grass");
   const road = new Road("road");
 
-  road.object.setOffset(new V(width, height));
-
-  actors.push(road);
+  actors.push(grass, road);
 }
 
 function update(timestamp) {
