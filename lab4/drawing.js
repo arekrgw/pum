@@ -237,7 +237,8 @@ const randomY = () => Math.floor((Math.random() * height) / 2);
 
 const randomCar = () => {
   let x = randomX();
-  if (x > width - 40) x = width - 40;
+  if (x < Road.x) x = Road.x;
+  if (x + 40 > Road.x + Road.w) x = Road.x + Road.w - 40;
   const car = new Car("car", "blue", x);
   actors.push(car);
   setTimeout(randomCar, randomTime());
