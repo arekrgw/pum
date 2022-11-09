@@ -12,6 +12,7 @@ function setup() {
 }
 
 function update(timestamp) {
+  if (gameConfig.gameOver) return;
   actors.forEach((actor) => actor.update(timestamp));
 }
 

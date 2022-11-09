@@ -16,6 +16,10 @@ const centerY = canvas.height / 2;
 const width = canvas.width;
 const height = canvas.height;
 
+const gameConfig = {
+  gameOver: false,
+};
+
 const actors = [];
 // user defined code
 
@@ -120,8 +124,10 @@ class Grass {
   update(timestamp) {}
 }
 
+const randomX = () => Math.floor(Math.random() * width);
+
 class Car {
-  constructor(name, color, x) {
+  constructor(name, color) {
     if (name === "plr") {
       this.color = color;
       this.name = name;
@@ -145,7 +151,15 @@ class Car {
       new V(0, 60),
     ]);
 
-    this.object.setOffset(new V(x, -60));
+    this.object.setOffset(new V(this.randomPlaceX(), -60));
+  }
+
+  randomPlaceX() {
+    let x = randomX();
+    if (x < Road.x) x = Road.x;
+    if (x + 40 > Road.x + Road.w) x = Road.x + Road.w - 40;
+
+    return x;
   }
 
   move(dir) {
@@ -180,24 +194,30 @@ class Car {
     if (this.name !== "plr") {
       this.object.translate(0, 5);
     }
+
+    if (this.name === "plr") {
+      actors.forEach((actor) => {
+        if (actor.name === "car") {
+          if (cPP(this.object, actor.object)) {
+            gameConfig.gameOver = true;
+          }
+        }
+      });
+    }
   }
 }
 
 const randomTime = () => Math.floor(Math.random() * 1000) + 500;
-const randomX = () => Math.floor(Math.random() * width);
-const randomY = () => Math.floor((Math.random() * height) / 2);
 
 const randomCar = () => {
-  let x = randomX();
-  if (x < Road.x) x = Road.x;
-  if (x + 40 > Road.x + Road.w) x = Road.x + Road.w - 40;
-  const car = new Car("car", "blue", x);
+  const car = new Car("car", "blue");
   actors.push(car);
   setTimeout(randomCar, randomTime());
 };
 
 randomCar();
 document.addEventListener("keydown", (e) => {
+  if (gameConfig.gameOver) return;
   const a = actors.find((a) => a.name === "plr");
   if (e.key === "ArrowLeft") {
     a.move("left");
