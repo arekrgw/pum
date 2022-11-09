@@ -17,35 +17,6 @@ const width = canvas.width;
 const height = canvas.height;
 
 const actors = [];
-class Actor {
-  constructor(object, offset, name) {
-    this.object = object;
-    this.object.setOffset(offset);
-    this.name = name;
-  }
-
-  actors(nameRegexp = null) {
-    return actors.filter(
-      (actor) =>
-        actor !== this && this.turnIntoRegexp(nameRegexp).test(actor.name)
-    );
-  }
-
-  turnIntoRegexp(name) {
-    if (typeof name === "string") {
-      return new RegExp(`^${name}$`);
-    }
-    return name;
-  }
-
-  iam(nameRegexp) {
-    return this.turnIntoRegexp(nameRegexp).test(this.name);
-  }
-
-  draw(timestamp) {}
-  update(timestamp) {}
-}
-
 // user defined code
 
 class Road {
