@@ -48,43 +48,13 @@ class Actor {
 
 // user defined code
 
-class Ball extends Actor {
-  static radius = 30;
-  color = "red";
-
-  get coords() {
-    return {
-      x: this.object.offset.x,
-      y: this.object.offset.y,
-      r: this.object.r,
-    };
-  }
-
-  constructor(object, offset, name) {
-    super(object, offset, name);
-  }
-
-  draw(timestamp) {
-    const { x, y, r } = this.coords;
-    ctx.beginPath();
-    ctx.arc(x, y, r, 0, 2 * Math.PI);
-    ctx.fillStyle = this.color;
-    ctx.fill();
-  }
-
-  update(timestamp) {
-    if (this.iam(/ball3/)) {
-      console.log("ball");
-    }
-  }
-}
-
 class Road {
   static x = 200;
   static y = 0;
   static h = height;
   static w = width - Road.x * 2;
   static stripeHeight = 40;
+  static speed = 5;
 
   constructor(name) {
     this.name = name;
@@ -137,21 +107,20 @@ class Road {
   }
 
   update(timestamp) {
-    const speed = 5;
     this.stripes.forEach((stripe) => {
-      stripe.y += speed;
+      stripe.y += Road.speed;
       if (stripe.y > Road.h) {
         stripe.y = -Road.stripeHeight;
       }
     });
     this.left.forEach((stripe) => {
-      stripe.y += speed;
+      stripe.y += Road.speed;
       if (stripe.y > Road.h) {
         stripe.y = -Road.stripeHeight;
       }
     });
     this.right.forEach((stripe) => {
-      stripe.y += speed;
+      stripe.y += Road.speed;
       if (stripe.y > Road.h) {
         stripe.y = -Road.stripeHeight;
       }
@@ -208,6 +177,18 @@ class Car {
     this.object.setOffset(new V(x, -60));
   }
 
+  move(dir) {
+    if (dir === "left") {
+      if (this.object.calcPoints[0].x > Road.x) {
+        this.object.translate(-10, 0);
+      }
+    } else if (dir === "right") {
+      if (this.object.calcPoints[1].x < Road.x + Road.w) {
+        this.object.translate(10, 0);
+      }
+    }
+  }
+
   draw(timestamp) {
     ctx.fillStyle = this.color;
     ctx.beginPath();
@@ -246,18 +227,11 @@ const randomCar = () => {
 
 randomCar();
 document.addEventListener("keydown", (e) => {
+  const a = actors.find((a) => a.name === "plr");
   if (e.key === "ArrowLeft") {
-    const a = actors.find((a) => a.name === "plr");
-
-    if (a.object.calcPoints[0].x > Road.x) {
-      a.object.translate(-10, 0);
-    }
+    a.move("left");
   }
   if (e.key === "ArrowRight") {
-    const a = actors.find((a) => a.name === "plr");
-
-    if (a.object.calcPoints[1].x < Road.x + Road.w) {
-      a.object.translate(10, 0);
-    }
+    a.move("right");
   }
 });
