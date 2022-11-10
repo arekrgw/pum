@@ -29,8 +29,6 @@ class ScoreBoard {
   constructor() {
     this.x = 10;
     this.y = 10;
-    this.width = 200;
-    this.height = 100;
     this.color = "white";
     this.font = "20px Arial";
   }
@@ -40,10 +38,11 @@ class ScoreBoard {
   draw() {
     ctx.fillStyle = this.color;
     ctx.font = this.font;
+    ctx.fillText(`Cars killed: ${gameConfig.carsKilled}`, this.x, this.y + 20);
     ctx.fillText(
-      `Score: ${gameConfig.carsKilled}\nBonuses: ${gameConfig.bonusesCollected}`,
+      `Bonuses: ${gameConfig.bonusesCollected}`,
       this.x,
-      this.y
+      this.y * 2 + 20 + 20
     );
   }
 }
@@ -203,8 +202,6 @@ class Bonus {
     this.object.setOffset(new V(this.randomPlaceX(), -15));
     this.color = "yellow";
     this.name = "bonus";
-
-    console.log("asd");
   }
 
   randomPlaceX() {
@@ -269,7 +266,7 @@ class Car {
 
   randomPlaceX() {
     let x = randomX();
-    if (x + 40 < Road.x) x = Road.x + 40;
+    if (x - 40 < Road.x) x = Road.x + 40;
     if (x + 40 > Road.x + Road.w) x = Road.x + Road.w - 40;
 
     return x;
