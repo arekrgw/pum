@@ -176,7 +176,7 @@ class Bonus {
     ]);
 
     this.object.rotate(Math.PI / 4);
-    this.object.setOffset(new V(this.randomPlaceX(), 40));
+    this.object.setOffset(new V(this.randomPlaceX(), -15));
     this.color = "yellow";
 
     console.log("asd");
@@ -184,13 +184,20 @@ class Bonus {
 
   randomPlaceX() {
     let x = randomX();
-    if (x < Road.x) x = Road.x;
+    if (x - 15 < Road.x) x = Road.x + 15;
     if (x + 15 > Road.x + Road.w) x = Road.x + Road.w - 15;
 
     return x;
   }
 
-  update() {}
+  update() {
+    if (this.object.calcPoints[0].y > height + 15) {
+      actors = actors.filter((actor) => actor !== this);
+      return;
+    }
+
+    this.object.translate(0, 5);
+  }
   draw() {
     ctx.fillStyle = this.color;
     ctx.beginPath();
@@ -237,7 +244,7 @@ class Car {
 
   randomPlaceX() {
     let x = randomX();
-    if (x < Road.x) x = Road.x;
+    if (x + 40 < Road.x) x = Road.x + 40;
     if (x + 40 > Road.x + Road.w) x = Road.x + Road.w - 40;
 
     return x;
