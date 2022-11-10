@@ -165,6 +165,48 @@ class Bullet {
     ctx.fill();
   }
 }
+
+class Bonus {
+  constructor(x, y) {
+    this.object = new P(new V(), [
+      new V(-10, -10),
+      new V(10, -10),
+      new V(10, 10),
+      new V(-10, 10),
+    ]);
+
+    this.object.rotate(Math.PI / 4);
+    this.object.setOffset(new V(this.randomPlaceX(), 40));
+    this.color = "yellow";
+
+    console.log("asd");
+  }
+
+  randomPlaceX() {
+    let x = randomX();
+    if (x < Road.x) x = Road.x;
+    if (x + 15 > Road.x + Road.w) x = Road.x + Road.w - 15;
+
+    return x;
+  }
+
+  update() {}
+  draw() {
+    ctx.fillStyle = this.color;
+    ctx.beginPath();
+
+    this.object.calcPoints.forEach(({ x, y }, i) => {
+      if (i === 0) {
+        ctx.moveTo(x, y);
+        return;
+      }
+      ctx.lineTo(x, y);
+    });
+
+    ctx.closePath();
+    ctx.fill();
+  }
+}
 class Car {
   constructor(name, color) {
     if (name === "plr") {
@@ -209,11 +251,11 @@ class Car {
   move(dir) {
     if (dir === "left") {
       if (this.object.calcPoints[0].x > Road.x) {
-        this.object.translate(-10, 0);
+        this.object.translate(-7, 0);
       }
     } else if (dir === "right") {
       if (this.object.calcPoints[1].x < Road.x + Road.w) {
-        this.object.translate(10, 0);
+        this.object.translate(7, 0);
       }
     }
   }
@@ -260,10 +302,13 @@ const randomCar = () => {
 };
 
 const randomBonus = () => {
-
-}
+  const bonus = new Bonus();
+  actors.push(bonus);
+  setTimeout(randomBonus, randomTime());
+};
 
 randomCar();
+randomBonus();
 document.addEventListener("keydown", (e) => {
   if (gameConfig.gameOver) return;
   const a = actors.find((a) => a.name === "plr");

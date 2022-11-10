@@ -23,7 +23,7 @@ function render(timestamp) {
 
 let lastRender;
 function draw(timestamp) {
-  if (lastRender && timestamp - lastRender < 1) {
+  if (lastRender && timestamp - lastRender < 0.5) {
     requestAnimationFrame(draw);
     return;
   }
