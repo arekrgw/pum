@@ -18,6 +18,8 @@ const height = canvas.height;
 
 const gameConfig = {
   gameOver: false,
+  carsKilled: 0,
+  bonusesCollected: 0,
 };
 
 let actors = [];
@@ -133,6 +135,15 @@ class Bullet {
     this.color = "black";
   }
   update() {
+    const foundCar = actors.find(
+      (a) => a.name === "car" && cCP(this.object, a.object)
+    );
+
+    if (foundCar) {
+      actors = actors.filter((actor) => actor !== this && actor !== foundCar);
+      return;
+    }
+
     if (this.object.pos.y < 0) {
       actors = actors.filter((actor) => actor !== this);
       return;
