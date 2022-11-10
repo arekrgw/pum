@@ -25,6 +25,29 @@ const gameConfig = {
 let actors = [];
 // user defined code
 
+class ScoreBoard {
+  constructor() {
+    this.x = 10;
+    this.y = 10;
+    this.width = 200;
+    this.height = 100;
+    this.color = "white";
+    this.font = "20px Arial";
+  }
+
+  update() {}
+
+  draw() {
+    ctx.fillStyle = this.color;
+    ctx.font = this.font;
+    ctx.fillText(
+      `Score: ${gameConfig.carsKilled}\nBonuses: ${gameConfig.bonusesCollected}`,
+      this.x,
+      this.y
+    );
+  }
+}
+
 class Road {
   static x = 200;
   static y = 0;
@@ -141,6 +164,7 @@ class Bullet {
 
     if (foundCar) {
       actors = actors.filter((actor) => actor !== this && actor !== foundCar);
+      gameConfig.carsKilled += 1;
       return;
     }
 
@@ -178,6 +202,7 @@ class Bonus {
     this.object.rotate(Math.PI / 4);
     this.object.setOffset(new V(this.randomPlaceX(), -15));
     this.color = "yellow";
+    this.name = "bonus";
 
     console.log("asd");
   }
@@ -293,6 +318,13 @@ class Car {
         if (actor.name === "car") {
           if (cPP(this.object, actor.object)) {
             gameConfig.gameOver = true;
+          }
+        }
+
+        if (actor.name === "bonus") {
+          if (cPP(this.object, actor.object)) {
+            gameConfig.bonusesCollected += 1;
+            actors = actors.filter((a) => a !== actor);
           }
         }
       });

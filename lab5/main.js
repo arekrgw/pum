@@ -5,10 +5,11 @@ function clearCanvas() {
 function setup() {
   const grass = new Grass("grass");
   const road = new Road("road");
+  const scoreboard = new ScoreBoard();
 
   const player = new Car("plr", "pink");
 
-  actors.push(grass, road, player);
+  actors.push(grass, road, player, scoreboard);
 }
 
 function update(timestamp) {
