@@ -38,12 +38,21 @@ class ScoreBoard {
   draw() {
     ctx.fillStyle = this.color;
     ctx.font = this.font;
+    ctx.textAlign = "left";
+    ctx.fillStyle = this.color;
     ctx.fillText(`Cars killed: ${gameConfig.carsKilled}`, this.x, this.y + 20);
     ctx.fillText(
       `Bonuses: ${gameConfig.bonusesCollected}`,
       this.x,
       this.y * 2 + 20 + 20
     );
+
+    if (gameConfig.gameOver) {
+      ctx.font = "40px Arial";
+      ctx.fillStyle = "red";
+      ctx.textAlign = "center";
+      ctx.fillText(`Game Over`, centerX, centerY + 20);
+    }
   }
 }
 
@@ -334,7 +343,7 @@ class Car {
   }
 }
 
-const randomTime = () => Math.floor(Math.random() * 1000) + 500;
+const randomTime = () => Math.floor(Math.random() * 1500) + 700;
 
 const randomCar = () => {
   const car = new Car("car", "blue");
