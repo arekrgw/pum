@@ -307,6 +307,11 @@ class Car {
 
   update(timestamp) {
     if (this.name !== "plr") {
+      if (this.object.calcPoints[0].y > height + 60) {
+        actors = actors.filter((actor) => actor !== this);
+        return;
+      }
+
       this.object.translate(0, 5);
     }
 
