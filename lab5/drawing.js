@@ -259,6 +259,10 @@ const randomCar = () => {
   setTimeout(randomCar, randomTime());
 };
 
+const randomBonus = () => {
+
+}
+
 randomCar();
 document.addEventListener("keydown", (e) => {
   if (gameConfig.gameOver) return;
