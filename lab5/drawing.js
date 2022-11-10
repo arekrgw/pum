@@ -357,8 +357,6 @@ const randomBonus = () => {
   setTimeout(randomBonus, randomTime());
 };
 
-randomCar();
-randomBonus();
 document.addEventListener("keydown", (e) => {
   if (gameConfig.gameOver) return;
   const a = actors.find((a) => a.name === "plr");

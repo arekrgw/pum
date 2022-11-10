@@ -10,6 +10,8 @@ function setup() {
   const player = new Car("plr", "pink");
 
   actors.push(grass, road, player, scoreboard);
+  randomCar();
+  randomBonus();
 }
 
 function update(timestamp) {
