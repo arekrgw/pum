@@ -20,7 +20,7 @@ const gameConfig = {
   gameOver: false,
 };
 
-const actors = [];
+let actors = [];
 // user defined code
 
 class Road {
@@ -126,6 +126,34 @@ class Grass {
 
 const randomX = () => Math.floor(Math.random() * width);
 
+class Bullet {
+  constructor(x, y) {
+    this.name = "bullet";
+    this.object = new C(new V(x, y), 10);
+    this.color = "black";
+  }
+  update() {
+    if (this.object.pos.y < 0) {
+      actors = actors.filter((actor) => actor !== this);
+      return;
+    }
+
+    this.object.pos.add(new V(0, -8));
+  }
+
+  draw() {
+    ctx.beginPath();
+    ctx.arc(
+      this.object.pos.x,
+      this.object.pos.y,
+      this.object.r,
+      0,
+      2 * Math.PI
+    );
+    ctx.fillStyle = this.color;
+    ctx.fill();
+  }
+}
 class Car {
   constructor(name, color) {
     if (name === "plr") {
@@ -160,6 +188,11 @@ class Car {
     if (x + 40 > Road.x + Road.w) x = Road.x + Road.w - 40;
 
     return x;
+  }
+
+  shoot() {
+    const [{ x, y }] = this.object.calcPoints;
+    actors.push(new Bullet(x + 20, y));
   }
 
   move(dir) {
@@ -224,5 +257,8 @@ document.addEventListener("keydown", (e) => {
   }
   if (e.key === "ArrowRight") {
     a.move("right");
+  }
+  if (e.key === " ") {
+    a.shoot();
   }
 });
