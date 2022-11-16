@@ -118,19 +118,19 @@ class Road {
     this.stripes.forEach((stripe) => {
       stripe.y += Road.speed;
       if (stripe.y > Road.h) {
-        stripe.y = -Road.stripeHeight;
+        stripe.y = -Road.stripeHeight + Road.speed;
       }
     });
     this.left.forEach((stripe) => {
       stripe.y += Road.speed;
       if (stripe.y > Road.h) {
-        stripe.y = -Road.stripeHeight;
+        stripe.y = -Road.stripeHeight + Road.speed;
       }
     });
     this.right.forEach((stripe) => {
       stripe.y += Road.speed;
       if (stripe.y > Road.h) {
-        stripe.y = -Road.stripeHeight;
+        stripe.y = -Road.stripeHeight + Road.speed;
       }
     });
   }
@@ -249,6 +249,7 @@ class Car {
   constructor(name, color) {
     if (name === "plr") {
       this.color = color;
+      this.moveDir = null;
       this.name = name;
       this.object = new P(new V(), [
         new V(),
@@ -282,16 +283,28 @@ class Car {
   }
 
   shoot() {
+    if (this.lastShot && performance.now() - this.lastShot < 200) return;
+
     const [{ x, y }] = this.object.calcPoints;
     actors.push(new Bullet(x + 20, y));
+    this.lastShot = performance.now();
   }
 
-  move(dir) {
-    if (dir === "left") {
+  moveDone() {
+    this.moveDir = null;
+  }
+
+  setMove(move) {
+    if (this.moveDir !== null) return;
+    this.moveDir = move;
+  }
+
+  move() {
+    if (this.moveDir === "left") {
       if (this.object.calcPoints[0].x > Road.x) {
         this.object.translate(-7, 0);
       }
-    } else if (dir === "right") {
+    } else if (this.moveDir === "right") {
       if (this.object.calcPoints[1].x < Road.x + Road.w) {
         this.object.translate(7, 0);
       }
@@ -325,6 +338,7 @@ class Car {
     }
 
     if (this.name === "plr") {
+      this.move();
       actors.forEach((actor) => {
         if (actor.name === "car") {
           if (cPP(this.object, actor.object)) {
@@ -357,16 +371,31 @@ const randomBonus = () => {
   setTimeout(randomBonus, randomTime());
 };
 
-document.addEventListener("keydown", (e) => {
-  if (gameConfig.gameOver) return;
-  const a = actors.find((a) => a.name === "plr");
-  if (e.key === "ArrowLeft") {
-    a.move("left");
-  }
-  if (e.key === "ArrowRight") {
-    a.move("right");
-  }
-  if (e.key === " ") {
-    a.shoot();
-  }
-});
+document.addEventListener(
+  "keydown",
+  (e) => {
+    if (gameConfig.gameOver) return;
+    const a = actors.find((a) => a.name === "plr");
+    if (e.key === "ArrowLeft") {
+      a.setMove("left");
+    }
+    if (e.key === "ArrowRight") {
+      a.setMove("right");
+    }
+    if (e.key === " ") {
+      a.shoot();
+    }
+  },
+  { passive: true }
+);
+
+document.addEventListener(
+  "keyup",
+  (e) => {
+    if (e.key === "ArrowLeft" || e.key === "ArrowRight") {
+      const a = actors.find((a) => a.name === "plr");
+      a.moveDone();
+    }
+  },
+  { passive: true }
+);
