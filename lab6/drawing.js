@@ -115,22 +115,23 @@ class Road {
   }
 
   update(timestamp) {
+    const currentSpeed = Road.speed;
     this.stripes.forEach((stripe) => {
-      stripe.y += Road.speed;
+      stripe.y += currentSpeed;
       if (stripe.y > Road.h) {
-        stripe.y = -Road.stripeHeight + Road.speed;
+        stripe.y = -Road.stripeHeight + currentSpeed;
       }
     });
     this.left.forEach((stripe) => {
-      stripe.y += Road.speed;
+      stripe.y += currentSpeed;
       if (stripe.y > Road.h) {
-        stripe.y = -Road.stripeHeight + Road.speed;
+        stripe.y = -Road.stripeHeight + currentSpeed;
       }
     });
     this.right.forEach((stripe) => {
-      stripe.y += Road.speed;
+      stripe.y += currentSpeed;
       if (stripe.y > Road.h) {
-        stripe.y = -Road.stripeHeight + Road.speed;
+        stripe.y = -Road.stripeHeight + currentSpeed;
       }
     });
   }
@@ -396,6 +397,15 @@ document.addEventListener(
   (e) => {
     if (gameConfig.gameOver) return;
     const a = actors.find((a) => a.name === "plr");
+
+    if (e.key === "a") {
+      Road.speed("up");
+    }
+
+    if (e.key === "z") {
+      Road.speed("down");
+    }
+
     if (e.key === "ArrowLeft") {
       a.setMoveX("left");
     }
@@ -425,6 +435,9 @@ document.addEventListener(
     if (e.key === "ArrowDown" || e.key === "ArrowUp") {
       const a = actors.find((a) => a.name === "plr");
       a.moveYDone();
+    }
+    if (e.key === "a" || e.key === "z") {
+      Road.speed(null);
     }
   },
   { passive: true }
