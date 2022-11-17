@@ -94,17 +94,17 @@ class Road {
     this.speedDir = null;
     for (let i = -1; i < Road.h / Road.stripeHeight; i++) {
       this.stripes.push({
-        y: i * Road.stripeHeight,
+        y: i * Road.stripeHeight - Road.speed,
         color: Math.abs(i % 2) ? "white" : "gray",
       });
 
       this.left.push({
-        y: i * Road.stripeHeight,
+        y: i * Road.stripeHeight - Road.speed,
         color: Math.abs(i % 2) ? "red" : "white",
       });
 
       this.right.push({
-        y: i * Road.stripeHeight,
+        y: i * Road.stripeHeight - Road.speed,
         color: Math.abs(i % 2) ? "red" : "white",
       });
     }
@@ -143,30 +143,33 @@ class Road {
 
   update(timestamp) {
     if (this.speedDir === "up") {
-      if (Road.speed < 20) Road.speed += 0.1;
-    }
-    if (this.speedDir === "down") {
-      if (Road.speed > 4) Road.speed -= 0.1;
+      if (Road.speed < 20) Road.speed += 0.5;
+    } else if (this.speedDir === "down") {
+      if (Road.speed > 4) Road.speed -= 0.5;
     }
     const currentSpeed = Road.speed;
-    this.stripes.forEach((stripe) => {
-      stripe.y += currentSpeed;
-      if (stripe.y > Road.h) {
-        stripe.y = -Road.stripeHeight + currentSpeed;
+    console.log(currentSpeed);
+
+    for (let i = this.stripes.length - 1; i >= 0; i--) {
+      let stripe = this.stripes[i];
+      if (stripe.y >= Road.h) {
+        // gameConfig.gameOver = true;
+        stripe.y = -Road.stripeHeight + (stripe.y - Road.h);
       }
-    });
-    this.left.forEach((stripe) => {
       stripe.y += currentSpeed;
-      if (stripe.y > Road.h) {
-        stripe.y = -Road.stripeHeight + currentSpeed;
+
+      stripe = this.left[i];
+      if (stripe.y >= Road.h) {
+        stripe.y = -Road.stripeHeight + (stripe.y - Road.h);
       }
-    });
-    this.right.forEach((stripe) => {
       stripe.y += currentSpeed;
-      if (stripe.y > Road.h) {
-        stripe.y = -Road.stripeHeight + currentSpeed;
+
+      stripe = this.right[i];
+      if (stripe.y >= Road.h) {
+        stripe.y = -Road.stripeHeight + (stripe.y - Road.h);
       }
-    });
+      stripe.y += currentSpeed;
+    }
   }
 }
 
@@ -215,7 +218,7 @@ class Bullet {
       return;
     }
 
-    this.object.pos.add(new V(0, (Road.speed + 5) * -1));
+    this.object.pos.add(new V(0, -5));
   }
 
   draw() {
@@ -430,13 +433,14 @@ document.addEventListener(
   (e) => {
     if (gameConfig.gameOver) return;
     const a = actors.find((a) => a.name === "plr");
+    const road = actors.find((a) => a.name === "road");
 
     if (e.key === "a") {
-      actors.find((a) => a.name === "road")?.speedChange("up");
+      road.speedChange("up");
     }
 
     if (e.key === "z") {
-      actors.find((a) => a.name === "road")?.speedChange("down");
+      road.speedChange("down");
     }
 
     if (e.key === "ArrowLeft") {
