@@ -6,10 +6,11 @@ function setup() {
   const grass = new Grass("grass");
   const road = new Road("road");
   const scoreboard = new ScoreBoard();
+  const speedometer = new Speedometer();
 
   const player = new Car("plr", "pink");
 
-  actors.push(grass, road, player, scoreboard);
+  actors.push(grass, road, player, scoreboard, speedometer);
   randomCar();
   randomBonus();
 }

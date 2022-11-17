@@ -56,6 +56,25 @@ class ScoreBoard {
   }
 }
 
+class Speedometer {
+  constructor() {
+    this.x = 10;
+    this.y = height - 20;
+    this.color = "white";
+    this.font = "20px Arial";
+  }
+
+  update() {}
+
+  draw() {
+    ctx.fillStyle = this.color;
+    ctx.font = this.font;
+    ctx.textAlign = "left";
+    ctx.fillStyle = this.color;
+    ctx.fillText(`Speed: ${(Road.speed * 10).toFixed(0)}kmh`, this.x, this.y);
+  }
+}
+
 class Road {
   static x = 200;
   static y = 0;
