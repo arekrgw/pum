@@ -249,7 +249,8 @@ class Car {
   constructor(name, color) {
     if (name === "plr") {
       this.color = color;
-      this.moveDir = null;
+      this.moveX = null;
+      this.moveY = null;
       this.name = name;
       this.object = new P(new V(), [
         new V(),
@@ -290,21 +291,39 @@ class Car {
     this.lastShot = performance.now();
   }
 
-  moveDone() {
-    this.moveDir = null;
+  moveXDone() {
+    this.moveX = null;
   }
 
-  setMove(move) {
-    if (this.moveDir !== null) return;
-    this.moveDir = move;
+  moveYDone() {
+    this.moveY = null;
+  }
+
+  setMoveX(move) {
+    if (this.moveX !== null) return;
+    this.moveX = move;
+  }
+
+  setMoveY(move) {
+    if (this.moveY !== null) return;
+    this.moveY = move;
   }
 
   move() {
-    if (this.moveDir === "left") {
+    if (this.moveX === "left") {
       if (this.object.calcPoints[0].x > Road.x) {
         this.object.translate(-7, 0);
       }
-    } else if (this.moveDir === "right") {
+    } else if (this.moveX === "right") {
+      if (this.object.calcPoints[1].x < Road.x + Road.w) {
+        this.object.translate(7, 0);
+      }
+    }
+    if (this.moveY === "up") {
+      if (this.object.calcPoints[0].x > Road.x) {
+        this.object.translate(-7, 0);
+      }
+    } else if (this.moveY === "down") {
       if (this.object.calcPoints[1].x < Road.x + Road.w) {
         this.object.translate(7, 0);
       }
@@ -377,10 +396,16 @@ document.addEventListener(
     if (gameConfig.gameOver) return;
     const a = actors.find((a) => a.name === "plr");
     if (e.key === "ArrowLeft") {
-      a.setMove("left");
+      a.setMoveX("left");
     }
     if (e.key === "ArrowRight") {
-      a.setMove("right");
+      a.setMoveX("right");
+    }
+    if (e.key === "ArrowDown") {
+      a.setMoveY("down");
+    }
+    if (e.key === "ArrowUp") {
+      a.setMoveY("up");
     }
     if (e.key === " ") {
       a.shoot();
@@ -394,7 +419,11 @@ document.addEventListener(
   (e) => {
     if (e.key === "ArrowLeft" || e.key === "ArrowRight") {
       const a = actors.find((a) => a.name === "plr");
-      a.moveDone();
+      a.moveXDone();
+    }
+    if (e.key === "ArrowDown" || e.key === "ArrowUp") {
+      const a = actors.find((a) => a.name === "plr");
+      a.moveYDone();
     }
   },
   { passive: true }
