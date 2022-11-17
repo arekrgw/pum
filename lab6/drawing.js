@@ -82,6 +82,9 @@ class Road {
   static w = width - Road.x * 2;
   static stripeHeight = 40;
   static speed = 5;
+  static roadDeg = 0;
+  static maxDeg = 45;
+  static toDir = null;
 
   constructor(name) {
     this.name = name;
