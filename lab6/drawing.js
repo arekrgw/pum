@@ -305,6 +305,7 @@ class Car {
   }
 
   setMoveY(move) {
+    console.log(move);
     if (this.moveY !== null) return;
     this.moveY = move;
   }
@@ -321,11 +322,11 @@ class Car {
     }
     if (this.moveY === "up") {
       if (this.object.calcPoints[0].x > Road.x) {
-        this.object.translate(-7, 0);
+        this.object.translate(0, -7);
       }
     } else if (this.moveY === "down") {
       if (this.object.calcPoints[1].x < Road.x + Road.w) {
-        this.object.translate(7, 0);
+        this.object.translate(0, 7);
       }
     }
   }
