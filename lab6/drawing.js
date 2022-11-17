@@ -69,6 +69,7 @@ class Road {
     this.stripes = [];
     this.left = [];
     this.right = [];
+    this.speedDir = null;
     for (let i = -1; i < Road.h / Road.stripeHeight; i++) {
       this.stripes.push({
         y: i * Road.stripeHeight,
@@ -85,6 +86,10 @@ class Road {
         color: Math.abs(i % 2) ? "red" : "white",
       });
     }
+  }
+
+  speedChange(dir) {
+    this.speedDir = dir;
   }
 
   draw(timestamp) {
@@ -115,6 +120,12 @@ class Road {
   }
 
   update(timestamp) {
+    if (this.speedDir === "up") {
+      if (Road.speed < 20) Road.speed += 0.1;
+    }
+    if (this.speedDir === "down") {
+      if (Road.speed > 4) Road.speed -= 0.1;
+    }
     const currentSpeed = Road.speed;
     this.stripes.forEach((stripe) => {
       stripe.y += currentSpeed;
@@ -182,7 +193,7 @@ class Bullet {
       return;
     }
 
-    this.object.pos.add(new V(0, -8));
+    this.object.pos.add(new V(0, (Road.speed + 5) * -1));
   }
 
   draw() {
@@ -228,7 +239,7 @@ class Bonus {
       return;
     }
 
-    this.object.translate(0, 5);
+    this.object.translate(0, Road.speed);
   }
   draw() {
     ctx.fillStyle = this.color;
@@ -355,7 +366,7 @@ class Car {
         return;
       }
 
-      this.object.translate(0, 5);
+      this.object.translate(0, Road.speed - 2);
     }
 
     if (this.name === "plr") {
@@ -399,11 +410,11 @@ document.addEventListener(
     const a = actors.find((a) => a.name === "plr");
 
     if (e.key === "a") {
-      Road.speed("up");
+      actors.find((a) => a.name === "road")?.speedChange("up");
     }
 
     if (e.key === "z") {
-      Road.speed("down");
+      actors.find((a) => a.name === "road")?.speedChange("down");
     }
 
     if (e.key === "ArrowLeft") {
@@ -437,7 +448,7 @@ document.addEventListener(
       a.moveYDone();
     }
     if (e.key === "a" || e.key === "z") {
-      Road.speed(null);
+      actors.find((a) => a.name === "road")?.speedChange(null);
     }
   },
   { passive: true }
