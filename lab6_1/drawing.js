@@ -27,8 +27,8 @@ let actors = [];
 
 class ScoreBoard {
   constructor() {
-    this.x = 10;
-    this.y = 10;
+    this.x = 40;
+    this.y = 20;
     this.color = "white";
     this.font = "20px Arial";
   }
@@ -58,8 +58,8 @@ class ScoreBoard {
 
 class Speedometer {
   constructor() {
-    this.x = 10;
-    this.y = height - 20;
+    this.x = 40;
+    this.y = height - 40;
     this.color = "white";
     this.font = "20px Arial";
   }
@@ -83,7 +83,7 @@ class Road {
   static stripeHeight = 40;
   static speed = 5;
   static roadDeg = 0;
-  static maxDeg = 45;
+  static maxDeg = 0.5;
   static toDir = null;
 
   constructor(name) {
@@ -142,6 +142,26 @@ class Road {
   }
 
   update(timestamp) {
+    if (this.toDir === "right") {
+      Road.roadDeg += 0.01;
+      if (Road.roadDeg > Road.maxDeg) {
+        Road.roadDeg = Road.maxDeg;
+        this.toDir = null;
+      }
+    } else if (this.toDir === "left") {
+      Road.roadDeg -= 0.01;
+      if (Road.roadDeg < -Road.maxDeg) {
+        Road.roadDeg = -Road.maxDeg;
+        this.toDir = null;
+      }
+    } else {
+      if (Road.roadDeg > 0) {
+        Road.roadDeg -= 0.01;
+      } else if (Road.roadDeg < 0) {
+        Road.roadDeg += 0.01;
+      }
+    }
+
     if (this.speedDir === "up") {
       if (Road.speed < 20) Road.speed += 0.5;
     } else if (this.speedDir === "down") {
@@ -296,7 +316,7 @@ class Car {
         new V(0, 60),
       ]);
 
-      this.object.setOffset(new V(centerX - 20, height - 70));
+      this.object.setOffset(new V(centerX - 20, height - 100));
       return;
     }
 
@@ -348,6 +368,7 @@ class Car {
   }
 
   move() {
+    let offset = 30;
     if (this.moveX === "left") {
       if (this.object.calcPoints[0].x > Road.x) {
         this.object.translate(-7, 0);
@@ -358,11 +379,11 @@ class Car {
       }
     }
     if (this.moveY === "up") {
-      if (this.object.calcPoints[0].y > 7) {
+      if (this.object.calcPoints[0].y > 7 + offset) {
         this.object.translate(0, -7);
       }
     } else if (this.moveY === "down") {
-      if (this.object.calcPoints[1].y < height - 60 - 7) {
+      if (this.object.calcPoints[1].y < height - 60 - 7 - offset) {
         this.object.translate(0, 7);
       }
     }
@@ -426,6 +447,13 @@ const randomBonus = () => {
   const bonus = new Bonus();
   actors.push(bonus);
   setTimeout(randomBonus, randomTime());
+};
+
+const randomRotate = () => {
+  if (Road.toDir !== null) return;
+  Road.toDir = Math.random() > 0.5 ? "left" : "right";
+
+  setTimeout(randomRotate, randomTime());
 };
 
 document.addEventListener(
