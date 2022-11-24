@@ -310,6 +310,7 @@ class Bonus {
   }
 }
 class Car {
+  static offsetY = 30;
   constructor(name, color) {
     if (name === "plr") {
       this.color = color;
@@ -374,7 +375,6 @@ class Car {
   }
 
   move() {
-    let offset = 30;
     if (this.moveX === "left") {
       if (this.object.calcPoints[0].x > Road.x) {
         this.object.translate(-7, 0);
@@ -385,11 +385,11 @@ class Car {
       }
     }
     if (this.moveY === "up") {
-      if (this.object.calcPoints[0].y > 7 + offset) {
+      if (this.object.calcPoints[0].y > 7 + Car.offsetY) {
         this.object.translate(0, -7);
       }
     } else if (this.moveY === "down") {
-      if (this.object.calcPoints[1].y < height - 60 - 7 - offset) {
+      if (this.object.calcPoints[1].y < height - 60 - 7 - Car.offsetY) {
         this.object.translate(0, 7);
       }
     }
