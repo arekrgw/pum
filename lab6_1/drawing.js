@@ -25,7 +25,6 @@ const gameConfig = {
 };
 
 let actors = [];
-// user defined code
 
 class ScoreBoard {
   constructor() {
