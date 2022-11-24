@@ -18,6 +18,7 @@ function setup() {
 
 function update(timestamp) {
   if (gameConfig.gameOver) return;
+  actors.find((actor) => actor.name === "road").updateDeg();
   actors.forEach((actor) => actor.update(timestamp));
 }
 

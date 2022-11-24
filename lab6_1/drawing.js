@@ -26,6 +26,12 @@ const gameConfig = {
 
 let actors = [];
 
+const reverseRotate = (modifier) => {
+  ctx.translate(centerX, centerY);
+  ctx.rotate((modifier * (Road.currentDegree * Math.PI)) / 180);
+  ctx.translate(-centerX, -centerY);
+};
+
 class ScoreBoard {
   constructor() {
     this.x = 40;
@@ -37,6 +43,7 @@ class ScoreBoard {
   update() {}
 
   draw() {
+    reverseRotate(-1);
     ctx.fillStyle = this.color;
     ctx.font = this.font;
     ctx.textAlign = "left";
@@ -54,6 +61,8 @@ class ScoreBoard {
       ctx.textAlign = "center";
       ctx.fillText(`Game Over`, centerX, centerY + 20);
     }
+
+    reverseRotate(1);
   }
 }
 
@@ -68,11 +77,13 @@ class Speedometer {
   update() {}
 
   draw() {
+    reverseRotate(-1);
     ctx.fillStyle = this.color;
     ctx.font = this.font;
     ctx.textAlign = "left";
     ctx.fillStyle = this.color;
     ctx.fillText(`Speed: ${(Road.speed * 10).toFixed(0)}kmh`, this.x, this.y);
+    reverseRotate(1);
   }
 }
 
@@ -83,8 +94,9 @@ class Road {
   static w = width - Road.x * 2;
   static stripeHeight = 40;
   static speed = 5;
-  static roadDeg = 0;
-  static maxDeg = 5.5;
+  static roadDeg = 0.03125;
+  static currentDegree = 0;
+  static maxDeg = 6;
   static toDir = null;
 
   constructor(name) {
@@ -118,10 +130,10 @@ class Road {
   draw() {
     const { x, y, w, h } = Road;
     ctx.beginPath();
-    ctx.rect(x, y, w, h);
+    ctx.rect(x, y - 300, w, h + 600);
     ctx.fillStyle = "gray";
     ctx.fill();
-    wrapper.style.transform = `rotate(${Road.roadDeg}deg)`;
+    // wrapper.style.transform = `rotate(${Road.roadDeg}deg)`;
 
     this.stripes.forEach((stripe) => {
       ctx.beginPath();
@@ -142,33 +154,41 @@ class Road {
       ctx.fill();
     });
   }
+  setDegree(modifier) {
+    ctx.translate(centerX, centerY);
+    ctx.rotate((modifier * (Road.roadDeg * Math.PI)) / 180);
+    ctx.translate(-centerX, -centerY);
+  }
 
-  update(timestamp) {
+  updateDeg() {
     if (Road.toDir === "right") {
-      Road.roadDeg += 0.02;
-      if (Road.roadDeg > Road.maxDeg) {
-        Road.roadDeg = Road.maxDeg;
+      Road.currentDegree += Road.roadDeg;
+      this.setDegree(1);
+      if (Road.currentDegree === Road.maxDeg) {
         Road.toDir = "finishing";
       }
     } else if (Road.toDir === "left") {
-      Road.roadDeg -= 0.02;
-      if (Road.roadDeg < -Road.maxDeg) {
-        Road.roadDeg = -Road.maxDeg;
+      Road.currentDegree -= Road.roadDeg;
+      this.setDegree(-1);
+      if (Road.currentDegree === -Road.maxDeg) {
         Road.toDir = "finishing";
       }
     } else if (Road.toDir === "finishing") {
-      if (Road.roadDeg > 0) {
-        Road.roadDeg -= 0.02;
-      } else if (Road.roadDeg < 0) {
-        Road.roadDeg += 0.02;
+      if (Road.currentDegree > 0) {
+        Road.currentDegree -= Road.roadDeg;
+        this.setDegree(-1);
+      } else if (Road.currentDegree < 0) {
+        Road.currentDegree += Road.roadDeg;
+        this.setDegree(1);
       }
 
-      if (Math.abs(Road.roadDeg) < 0.01) {
-        console.log("t");
+      if (Road.currentDegree === 0) {
         Road.toDir = null;
       }
     }
+  }
 
+  update(timestamp) {
     if (this.speedDir === "up") {
       if (Road.speed < 20) Road.speed += 0.5;
     } else if (this.speedDir === "down") {
@@ -200,10 +220,10 @@ class Road {
 }
 
 class Grass {
-  static x = 0;
-  static y = 0;
-  static h = height;
-  static w = width;
+  static x = -300;
+  static y = -300;
+  static h = height + 600;
+  static w = width + 600;
 
   constructor(name) {
     this.name = name;
@@ -286,7 +306,8 @@ class Bonus {
 
   update() {
     if (this.object.calcPoints[0].y > height + 15) {
-      actors = actors.filter((actor) => actor !== this);
+      // remove bonus
+      actors.splice(actors.indexOf(this), 1);
       return;
     }
 
@@ -417,7 +438,7 @@ class Car {
   update(timestamp) {
     if (this.name !== "plr") {
       if (this.object.calcPoints[0].y > height + 60) {
-        actors = actors.filter((actor) => actor !== this);
+        actors.splice(actors.indexOf(this), 1);
         return;
       }
 
