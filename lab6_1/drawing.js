@@ -311,6 +311,7 @@ class Bonus {
 }
 class Car {
   static offsetY = 30;
+  playerSpeed = 7;
   constructor(name, color) {
     if (name === "plr") {
       this.color = color;
@@ -377,20 +378,23 @@ class Car {
   move() {
     if (this.moveX === "left") {
       if (this.object.calcPoints[0].x > Road.x) {
-        this.object.translate(-7, 0);
+        this.object.translate(-this.playerSpeed, 0);
       }
     } else if (this.moveX === "right") {
       if (this.object.calcPoints[1].x < Road.x + Road.w) {
-        this.object.translate(7, 0);
+        this.object.translate(this.playerSpeed, 0);
       }
     }
     if (this.moveY === "up") {
-      if (this.object.calcPoints[0].y > 7 + Car.offsetY) {
-        this.object.translate(0, -7);
+      if (this.object.calcPoints[0].y > this.playerSpeed + Car.offsetY) {
+        this.object.translate(0, -this.playerSpeed);
       }
     } else if (this.moveY === "down") {
-      if (this.object.calcPoints[1].y < height - 60 - 7 - Car.offsetY) {
-        this.object.translate(0, 7);
+      if (
+        this.object.calcPoints[1].y <
+        height - 60 - this.playerSpeed - Car.offsetY
+      ) {
+        this.object.translate(0, this.playerSpeed);
       }
     }
   }
