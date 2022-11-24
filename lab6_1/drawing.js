@@ -123,7 +123,7 @@ class Road {
     ctx.fillStyle = "gray";
     ctx.fill();
     console.log(Road.roadDeg);
-    wrapper.style.transform = `scale(1.04) rotate(${Road.roadDeg}deg);`;
+    wrapper.style.transform = `scale(1.04) rotate(${Road.roadDeg}deg)`;
 
     this.stripes.forEach((stripe) => {
       ctx.beginPath();
@@ -146,19 +146,19 @@ class Road {
   }
 
   update(timestamp) {
-    if (this.toDir === "right") {
+    if (Road.toDir === "right") {
       Road.roadDeg += 0.01;
       if (Road.roadDeg > Road.maxDeg) {
         Road.roadDeg = Road.maxDeg;
-        this.toDir = null;
+        Road.toDir = "finishing";
       }
-    } else if (this.toDir === "left") {
+    } else if (Road.toDir === "left") {
       Road.roadDeg -= 0.01;
       if (Road.roadDeg < -Road.maxDeg) {
         Road.roadDeg = -Road.maxDeg;
-        this.toDir = null;
+        Road.toDir = "finishing";
       }
-    } else {
+    } else if (Road.toDir === "finishing") {
       if (Road.roadDeg > 0) {
         Road.roadDeg -= 0.01;
       } else if (Road.roadDeg < 0) {
@@ -454,7 +454,7 @@ const randomBonus = () => {
 const randomRotate = () => {
   if (Road.toDir !== null) return;
   Road.toDir = Math.random() > 0.5 ? "left" : "right";
-
+  console.log(randomRotate, Road.toDir);
   setTimeout(randomRotate, randomTime());
 };
 
