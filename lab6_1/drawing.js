@@ -116,7 +116,7 @@ class Road {
     this.speedDir = dir;
   }
 
-  draw(timestamp) {
+  draw() {
     const { x, y, w, h } = Road;
     ctx.beginPath();
     ctx.rect(x, y, w, h);
