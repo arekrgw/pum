@@ -16,8 +16,6 @@ const centerY = canvas.height / 2;
 const width = canvas.width;
 const height = canvas.height;
 
-const wrapper = document.querySelector("#toRotate");
-
 const gameConfig = {
   gameOver: false,
   carsKilled: 0,
@@ -133,7 +131,6 @@ class Road {
     ctx.rect(x, y - 300, w, h + 600);
     ctx.fillStyle = "gray";
     ctx.fill();
-    // wrapper.style.transform = `rotate(${Road.roadDeg}deg)`;
 
     this.stripes.forEach((stripe) => {
       ctx.beginPath();
