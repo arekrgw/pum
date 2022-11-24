@@ -30,7 +30,7 @@ let actors = [];
 class ScoreBoard {
   constructor() {
     this.x = 40;
-    this.y = 20;
+    this.y = centerY - 100;
     this.color = "white";
     this.font = "20px Arial";
   }
@@ -46,7 +46,7 @@ class ScoreBoard {
     ctx.fillText(
       `Bonuses: ${gameConfig.bonusesCollected}`,
       this.x,
-      this.y * 2 + 20 + 20
+      this.y + 10 + 20 + 20
     );
 
     if (gameConfig.gameOver) {
@@ -61,7 +61,7 @@ class ScoreBoard {
 class Speedometer {
   constructor() {
     this.x = 40;
-    this.y = height - 40;
+    this.y = centerY;
     this.color = "white";
     this.font = "20px Arial";
   }
@@ -85,7 +85,7 @@ class Road {
   static stripeHeight = 40;
   static speed = 5;
   static roadDeg = 0;
-  static maxDeg = 4;
+  static maxDeg = 5.5;
   static toDir = null;
 
   constructor(name) {
