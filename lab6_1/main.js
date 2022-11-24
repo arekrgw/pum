@@ -13,6 +13,7 @@ function setup() {
   actors.push(grass, road, player, scoreboard, speedometer);
   randomCar();
   randomBonus();
+  randomRotate();
 }
 
 function update(timestamp) {

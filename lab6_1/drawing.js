@@ -16,6 +16,8 @@ const centerY = canvas.height / 2;
 const width = canvas.width;
 const height = canvas.height;
 
+const wrapper = document.querySelector("#toRotate");
+
 const gameConfig = {
   gameOver: false,
   carsKilled: 0,
@@ -120,6 +122,8 @@ class Road {
     ctx.rect(x, y, w, h);
     ctx.fillStyle = "gray";
     ctx.fill();
+    console.log(Road.roadDeg);
+    wrapper.style.transform = `scale(1.04) rotate(${Road.roadDeg}deg);`;
 
     this.stripes.forEach((stripe) => {
       ctx.beginPath();
@@ -168,7 +172,6 @@ class Road {
       if (Road.speed > 4) Road.speed -= 0.5;
     }
     const currentSpeed = Road.speed;
-    console.log(currentSpeed);
 
     for (let i = this.stripes.length - 1; i >= 0; i--) {
       let stripe = this.stripes[i];
@@ -362,7 +365,6 @@ class Car {
   }
 
   setMoveY(move) {
-    console.log(move);
     if (this.moveY !== null) return;
     this.moveY = move;
   }
