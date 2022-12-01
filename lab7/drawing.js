@@ -256,15 +256,17 @@ class Car {
   static beginX = 25;
   static beginY = 25;
   static playerH = 40;
-  static maxPlayerJump = 100;
+  static maxPlayerJump = 200;
   static jumpSpeed = 5;
-  static minimalJump = 30;
+
+  static minimalJump = 60;
 
   constructor(name, color) {
     if (name === "plr") {
       this.color = color;
       this.jumpingDir = null;
       this.jumpBlocked = false;
+      this.jumpPressed = false;
 
       this.name = name;
       this.object = new P(new V(), [
@@ -309,53 +311,68 @@ class Car {
   }
 
   jump() {
-    if (this.jumpBlocked) return;
-    this.jumpingDir = "up";
+    this.jumpPressed = true;
+    this.jumpBlocked = true;
   }
 
   jumpDone() {
-    if (this.jumpBlocked) return;
-    this.jumpingDir = "down";
+    this.jumpPressed = false;
   }
 
   _jump() {
-    if (this.jumpingDir === "down") {
-      console.log(this.object);
+    if (this.jumpingDir === null && this.jumpPressed) {
+      this.jumpingDir = "up";
+    }
 
-      console.log(
-        this.object.calcPoints[0].y,
-        height - Car.beginY - Car.playerH
-      );
-      if (this.object.calcPoints[0].y < height - Car.beginY - Car.playerH) {
-        this.object.translate(0, Car.jumpSpeed);
-      }
-    } else if (this.jumpingDir === "up") {
+    if (this.jumpingDir === "up") {
       this.object.translate(0, -Car.jumpSpeed);
-    }
-  }
 
-  move() {
-    if (this.moveX === "left") {
-      if (this.object.calcPoints[0].x > Road.x) {
-        this.object.translate(-this.playerSpeed, 0);
-      }
-    } else if (this.moveX === "right") {
-      if (this.object.calcPoints[1].x < Road.x + Road.w) {
-        this.object.translate(this.playerSpeed, 0);
-      }
-    }
-    if (this.moveY === "up") {
-      if (this.object.calcPoints[0].y > this.playerSpeed + Car.offsetY) {
-        this.object.translate(0, -this.playerSpeed);
-      }
-    } else if (this.moveY === "down") {
       if (
-        this.object.calcPoints[1].y <
-        height - 60 - this.playerSpeed - Car.offsetY
+        this.object.calcPoints[0].y <
+        height - Car.beginY - Car.playerH - Car.minimalJump
       ) {
-        this.object.translate(0, this.playerSpeed);
+        if (!this.jumpPressed) {
+          this.jumpingDir = "down";
+        }
+
+        if (
+          this.jumpPressed &&
+          this.object.calcPoints[0].y <
+            height - Car.beginY - Car.playerH - Car.maxPlayerJump
+        ) {
+          this.jumpingDir = "down";
+        }
+      }
+
+      return;
+    }
+
+    if (this.jumpingDir === "down") {
+      this.object.translate(0, Car.jumpSpeed);
+
+      if (this.object.calcPoints[0].y > height - Car.beginY - Car.playerH) {
+        this.jumpingDir = null;
       }
     }
+
+    // if (this.jumpingDir === "down") {
+    //   if (this.object.calcPoints[0].y < height - Car.beginY - Car.playerH) {
+    //     this.object.translate(0, Car.jumpSpeed);
+    //   } else {
+    //     this.jumpingDir = null;
+    //     this.jumpBlocked = false;
+    //   }
+    // } else if (this.jumpingDir === "up") {
+    //   if (
+    //     this.object.calcPoints[0].y >
+    //     height - Car.beginY - Car.playerH - Car.maxPlayerJump
+    //   ) {
+    //     this.object.translate(0, -Car.jumpSpeed);
+    //   } else {
+    //     this.jumpBlocked = true;
+    //     this.jumpingDir = "down";
+    //   }
+    // }
   }
 
   draw(timestamp) {
