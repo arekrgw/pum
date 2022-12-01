@@ -3,22 +3,22 @@ function clearCanvas() {
 }
 
 function setup() {
-  const grass = new Grass("grass");
+  // const grass = new Grass("grass");
   const road = new Road("road");
-  const scoreboard = new ScoreBoard();
-  const speedometer = new Speedometer();
+  // const scoreboard = new ScoreBoard();
+  // const speedometer = new Speedometer();
 
-  const player = new Car("plr", "pink");
+  // const player = new Car("plr", "pink");
 
-  actors.push(grass, road, player, scoreboard, speedometer);
-  randomCar();
-  randomBonus();
-  randomRotate();
+  actors.push(road);
+  // randomCar();
+  // randomBonus();
+  // randomRotate();
 }
 
 function update(timestamp) {
   if (gameConfig.gameOver) return;
-  actors.find((actor) => actor.name === "road").updateDeg();
+  // actors.find((actor) => actor.name === "road").updateDeg();
   actors.forEach((actor) => actor.update(timestamp));
 }
 

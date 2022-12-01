@@ -89,8 +89,8 @@ class Road {
   static x = 200;
   static y = 0;
   static h = height;
-  static w = width - Road.x * 2;
-  static stripeHeight = 40;
+  static w = width;
+  static stripeWidth = 40;
   static speed = 5;
   static roadDeg = 0.03125;
   static currentDegree = 0;
@@ -99,25 +99,25 @@ class Road {
 
   constructor(name) {
     this.name = name;
-    this.stripes = [];
+    // this.stripes = [];
     this.left = [];
-    this.right = [];
+    // this.right = [];
     this.speedDir = null;
-    for (let i = -1; i < Road.h / Road.stripeHeight; i++) {
-      this.stripes.push({
-        y: i * Road.stripeHeight - Road.speed,
-        color: Math.abs(i % 2) ? "white" : "gray",
-      });
+    for (let i = Road.w / Road.stripeWidth; i >= -1; i--) {
+      // this.stripes.push({
+      //   y: i * Road.stripeHeight - Road.speed,
+      //   color: Math.abs(i % 2) ? "white" : "gray",
+      // });
 
       this.left.push({
-        y: i * Road.stripeHeight - Road.speed,
+        x: i * Road.stripeWidth - Road.speed,
         color: Math.abs(i % 2) ? "red" : "white",
       });
 
-      this.right.push({
-        y: i * Road.stripeHeight - Road.speed,
-        color: Math.abs(i % 2) ? "red" : "white",
-      });
+      // this.right.push({
+      //   y: i * Road.stripeHeight - Road.speed,
+      //   color: Math.abs(i % 2) ? "red" : "white",
+      // });
     }
   }
 
@@ -128,90 +128,65 @@ class Road {
   draw() {
     const { x, y, w, h } = Road;
     ctx.beginPath();
-    ctx.rect(x, y - 300, w, h + 600);
+    ctx.rect(0, 0, w, h);
     ctx.fillStyle = "gray";
     ctx.fill();
 
-    this.stripes.forEach((stripe) => {
-      ctx.beginPath();
-      ctx.rect(centerX - 5, stripe.y, 10, Road.stripeHeight);
-      ctx.fillStyle = stripe.color;
-      ctx.fill();
-    });
     this.left.forEach((stripe) => {
       ctx.beginPath();
-      ctx.rect(x - 10, stripe.y, 10, Road.stripeHeight);
+      ctx.rect(stripe.x, Road.h - 20, Road.stripeWidth, 20);
       ctx.fillStyle = stripe.color;
       ctx.fill();
     });
-    this.right.forEach((stripe) => {
-      ctx.beginPath();
-      ctx.rect(w + x, stripe.y, 10, Road.stripeHeight);
-      ctx.fillStyle = stripe.color;
-      ctx.fill();
-    });
+
+    // this.right.forEach((stripe) => {
+    //   ctx.beginPath();
+    //   ctx.rect(w + x, stripe.y, 10, Road.stripeHeight);
+    //   ctx.fillStyle = stripe.color;
+    //   ctx.fill();
+    // });
   }
   setDegree(modifier) {
-    ctx.translate(centerX, centerY);
-    ctx.rotate((modifier * (Road.roadDeg * Math.PI)) / 180);
-    ctx.translate(-centerX, -centerY);
+    // ctx.translate(centerX, centerY);
+    // ctx.rotate((modifier * (Road.roadDeg * Math.PI)) / 180);
+    // ctx.translate(-centerX, -centerY);
   }
 
   updateDeg() {
-    if (Road.toDir === "right") {
-      Road.currentDegree += Road.roadDeg;
-      this.setDegree(1);
-      if (Road.currentDegree === Road.maxDeg) {
-        Road.toDir = "finishing";
-      }
-    } else if (Road.toDir === "left") {
-      Road.currentDegree -= Road.roadDeg;
-      this.setDegree(-1);
-      if (Road.currentDegree === -Road.maxDeg) {
-        Road.toDir = "finishing";
-      }
-    } else if (Road.toDir === "finishing") {
-      if (Road.currentDegree > 0) {
-        Road.currentDegree -= Road.roadDeg;
-        this.setDegree(-1);
-      } else if (Road.currentDegree < 0) {
-        Road.currentDegree += Road.roadDeg;
-        this.setDegree(1);
-      }
-
-      if (Road.currentDegree === 0) {
-        Road.toDir = null;
-      }
-    }
+    // if (Road.toDir === "right") {
+    //   Road.currentDegree += Road.roadDeg;
+    //   this.setDegree(1);
+    //   if (Road.currentDegree === Road.maxDeg) {
+    //     Road.toDir = "finishing";
+    //   }
+    // } else if (Road.toDir === "left") {
+    //   Road.currentDegree -= Road.roadDeg;
+    //   this.setDegree(-1);
+    //   if (Road.currentDegree === -Road.maxDeg) {
+    //     Road.toDir = "finishing";
+    //   }
+    // } else if (Road.toDir === "finishing") {
+    //   if (Road.currentDegree > 0) {
+    //     Road.currentDegree -= Road.roadDeg;
+    //     this.setDegree(-1);
+    //   } else if (Road.currentDegree < 0) {
+    //     Road.currentDegree += Road.roadDeg;
+    //     this.setDegree(1);
+    //   }
+    //   if (Road.currentDegree === 0) {
+    //     Road.toDir = null;
+    //   }
+    // }
   }
 
   update(timestamp) {
-    if (this.speedDir === "up") {
-      if (Road.speed < 20) Road.speed += 0.5;
-    } else if (this.speedDir === "down") {
-      if (Road.speed > 4) Road.speed -= 0.5;
-    }
     const currentSpeed = Road.speed;
-
-    for (let i = this.stripes.length - 1; i >= 0; i--) {
-      let stripe = this.stripes[i];
-      if (stripe.y >= Road.h) {
-        // gameConfig.gameOver = true;
-        stripe.y = -Road.stripeHeight + (stripe.y - Road.h);
+    for (let i = this.left.length - 1; i >= 0; i--) {
+      let stripe = this.left[i];
+      if (stripe.x <= -Road.stripeWidth) {
+        stripe.x = Road.w + Road.stripeWidth - Road.speed;
       }
-      stripe.y += currentSpeed;
-
-      stripe = this.left[i];
-      if (stripe.y >= Road.h) {
-        stripe.y = -Road.stripeHeight + (stripe.y - Road.h);
-      }
-      stripe.y += currentSpeed;
-
-      stripe = this.right[i];
-      if (stripe.y >= Road.h) {
-        stripe.y = -Road.stripeHeight + (stripe.y - Road.h);
-      }
-      stripe.y += currentSpeed;
+      stripe.x -= currentSpeed;
     }
   }
 }
