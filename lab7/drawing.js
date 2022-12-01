@@ -35,8 +35,6 @@ class ScoreBoard {
   }
 }
 class Road {
-  static x = 200;
-  static y = 0;
   static h = height;
   static w = width;
   static stripeWidth = 40;
