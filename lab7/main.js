@@ -3,11 +3,22 @@ function clearCanvas() {
 }
 
 function setup() {
-  console.log(width, height);
-  actors.push(new MazeBuilder(width, height, 40));
+  const grass = new Grass("grass");
+  const road = new Road("road");
+  const scoreboard = new ScoreBoard();
+  const speedometer = new Speedometer();
+
+  const player = new Car("plr", "pink");
+
+  actors.push(grass, road, player, scoreboard, speedometer);
+  randomCar();
+  randomBonus();
+  randomRotate();
 }
 
 function update(timestamp) {
+  if (gameConfig.gameOver) return;
+  actors.find((actor) => actor.name === "road").updateDeg();
   actors.forEach((actor) => actor.update(timestamp));
 }
 
@@ -18,7 +29,7 @@ function render(timestamp) {
 
 let lastRender;
 function draw(timestamp) {
-  if (lastRender && timestamp - lastRender < 1) {
+  if (lastRender && timestamp - lastRender < 2) {
     requestAnimationFrame(draw);
     return;
   }
