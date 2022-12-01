@@ -252,7 +252,6 @@ class Bonus {
 }
 class Car {
   static offsetY = 30;
-  playerSpeed = 7;
   static beginX = 25;
   static beginY = 25;
   static playerH = 40;
@@ -292,22 +291,6 @@ class Car {
     ]);
 
     this.object.setOffset(new V(this.randomPlaceX(), -60));
-  }
-
-  randomPlaceX() {
-    let x = randomX();
-    if (x - 40 < Road.x) x = Road.x + 40;
-    if (x + 40 > Road.x + Road.w) x = Road.x + Road.w - 40;
-
-    return x;
-  }
-
-  shoot() {
-    if (this.lastShot && performance.now() - this.lastShot < 200) return;
-
-    const [{ x, y }] = this.object.calcPoints;
-    actors.push(new Bullet(x + 20, y));
-    this.lastShot = performance.now();
   }
 
   jump() {
@@ -350,29 +333,10 @@ class Car {
     if (this.jumpingDir === "down") {
       this.object.translate(0, Car.jumpSpeed);
 
-      if (this.object.calcPoints[0].y > height - Car.beginY - Car.playerH) {
+      if (this.object.calcPoints[0].y >= height - Car.beginY - Car.playerH) {
         this.jumpingDir = null;
       }
     }
-
-    // if (this.jumpingDir === "down") {
-    //   if (this.object.calcPoints[0].y < height - Car.beginY - Car.playerH) {
-    //     this.object.translate(0, Car.jumpSpeed);
-    //   } else {
-    //     this.jumpingDir = null;
-    //     this.jumpBlocked = false;
-    //   }
-    // } else if (this.jumpingDir === "up") {
-    //   if (
-    //     this.object.calcPoints[0].y >
-    //     height - Car.beginY - Car.playerH - Car.maxPlayerJump
-    //   ) {
-    //     this.object.translate(0, -Car.jumpSpeed);
-    //   } else {
-    //     this.jumpBlocked = true;
-    //     this.jumpingDir = "down";
-    //   }
-    // }
   }
 
   draw(timestamp) {
