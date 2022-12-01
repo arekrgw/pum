@@ -24,9 +24,7 @@ let actors = [];
 
 class ScoreBoard {
   constructor() {}
-
   update() {}
-
   draw() {
     if (gameConfig.gameOver) {
       ctx.font = "40px Arial";
