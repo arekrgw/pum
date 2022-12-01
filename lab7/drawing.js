@@ -84,13 +84,11 @@ class Road {
 }
 
 class Car {
-  static offsetY = 30;
   static beginX = 25;
   static beginY = 20;
   static playerH = 40;
   static maxPlayerJump = 200;
   static jumpSpeed = 8;
-
   static minimalJump = 60;
 
   constructor(name, color) {
