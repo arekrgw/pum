@@ -256,11 +256,16 @@ class Car {
   static beginX = 25;
   static beginY = 25;
   static playerH = 40;
+  static maxPlayerJump = 100;
+  static jumpSpeed = 5;
+  static minimalJump = 30;
+
   constructor(name, color) {
     if (name === "plr") {
       this.color = color;
-      this.moveX = null;
-      this.moveY = null;
+      this.jumpingDir = null;
+      this.jumpBlocked = false;
+
       this.name = name;
       this.object = new P(new V(), [
         new V(),
@@ -303,22 +308,30 @@ class Car {
     this.lastShot = performance.now();
   }
 
-  moveXDone() {
-    this.moveX = null;
+  jump() {
+    if (this.jumpBlocked) return;
+    this.jumpingDir = "up";
   }
 
-  moveYDone() {
-    this.moveY = null;
+  jumpDone() {
+    if (this.jumpBlocked) return;
+    this.jumpingDir = "down";
   }
 
-  setMoveX(move) {
-    if (this.moveX !== null) return;
-    this.moveX = move;
-  }
+  _jump() {
+    if (this.jumpingDir === "down") {
+      console.log(this.object);
 
-  setMoveY(move) {
-    if (this.moveY !== null) return;
-    this.moveY = move;
+      console.log(
+        this.object.calcPoints[0].y,
+        height - Car.beginY - Car.playerH
+      );
+      if (this.object.calcPoints[0].y < height - Car.beginY - Car.playerH) {
+        this.object.translate(0, Car.jumpSpeed);
+      }
+    } else if (this.jumpingDir === "up") {
+      this.object.translate(0, -Car.jumpSpeed);
+    }
   }
 
   move() {
@@ -362,32 +375,33 @@ class Car {
   }
 
   update(timestamp) {
-    if (this.name !== "plr") {
-      if (this.object.calcPoints[0].y > height + 60) {
-        actors.splice(actors.indexOf(this), 1);
-        return;
-      }
+    this._jump(timestamp);
+    // if (this.name !== "plr") {
+    //   if (this.object.calcPoints[0].y > height + 60) {
+    //     actors.splice(actors.indexOf(this), 1);
+    //     return;
+    //   }
 
-      this.object.translate(0, Road.speed - 2);
-    }
+    //   this.object.translate(0, Road.speed - 2);
+    // }
 
-    if (this.name === "plr") {
-      this.move();
-      actors.forEach((actor) => {
-        if (actor.name === "car") {
-          if (cPP(this.object, actor.object)) {
-            gameConfig.gameOver = true;
-          }
-        }
+    // if (this.name === "plr") {
+    //   this.move();
+    //   actors.forEach((actor) => {
+    //     if (actor.name === "car") {
+    //       if (cPP(this.object, actor.object)) {
+    //         gameConfig.gameOver = true;
+    //       }
+    //     }
 
-        if (actor.name === "bonus") {
-          if (cPP(this.object, actor.object)) {
-            gameConfig.bonusesCollected += 1;
-            actors = actors.filter((a) => a !== actor);
-          }
-        }
-      });
-    }
+    //     if (actor.name === "bonus") {
+    //       if (cPP(this.object, actor.object)) {
+    //         gameConfig.bonusesCollected += 1;
+    //         actors = actors.filter((a) => a !== actor);
+    //       }
+    //     }
+    //   });
+    // }
   }
 }
 
@@ -419,30 +433,8 @@ document.addEventListener(
   (e) => {
     if (gameConfig.gameOver) return;
     const a = actors.find((a) => a.name === "plr");
-    const road = actors.find((a) => a.name === "road");
-
-    if (e.key === "a") {
-      road.speedChange("up");
-    }
-
-    if (e.key === "z") {
-      road.speedChange("down");
-    }
-
-    if (e.key === "ArrowLeft") {
-      a.setMoveX("left");
-    }
-    if (e.key === "ArrowRight") {
-      a.setMoveX("right");
-    }
-    if (e.key === "ArrowDown") {
-      a.setMoveY("down");
-    }
-    if (e.key === "ArrowUp") {
-      a.setMoveY("up");
-    }
     if (e.key === " ") {
-      a.shoot();
+      a.jump();
     }
   },
   { passive: true }
@@ -451,16 +443,9 @@ document.addEventListener(
 document.addEventListener(
   "keyup",
   (e) => {
-    if (e.key === "ArrowLeft" || e.key === "ArrowRight") {
+    if (e.key === " ") {
       const a = actors.find((a) => a.name === "plr");
-      a.moveXDone();
-    }
-    if (e.key === "ArrowDown" || e.key === "ArrowUp") {
-      const a = actors.find((a) => a.name === "plr");
-      a.moveYDone();
-    }
-    if (e.key === "a" || e.key === "z") {
-      actors.find((a) => a.name === "road")?.speedChange(null);
+      a.jumpDone();
     }
   },
   { passive: true }
