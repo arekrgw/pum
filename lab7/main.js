@@ -8,9 +8,9 @@ function setup() {
   // const scoreboard = new ScoreBoard();
   // const speedometer = new Speedometer();
 
-  // const player = new Car("plr", "pink");
+  const player = new Car("plr", "pink");
 
-  actors.push(road);
+  actors.push(road, player);
   // randomCar();
   // randomBonus();
   // randomRotate();

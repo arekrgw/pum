@@ -99,25 +99,13 @@ class Road {
 
   constructor(name) {
     this.name = name;
-    // this.stripes = [];
     this.left = [];
-    // this.right = [];
     this.speedDir = null;
     for (let i = Road.w / Road.stripeWidth; i >= -1; i--) {
-      // this.stripes.push({
-      //   y: i * Road.stripeHeight - Road.speed,
-      //   color: Math.abs(i % 2) ? "white" : "gray",
-      // });
-
       this.left.push({
         x: i * Road.stripeWidth - Road.speed,
         color: Math.abs(i % 2) ? "red" : "white",
       });
-
-      // this.right.push({
-      //   y: i * Road.stripeHeight - Road.speed,
-      //   color: Math.abs(i % 2) ? "red" : "white",
-      // });
     }
   }
 
@@ -126,7 +114,7 @@ class Road {
   }
 
   draw() {
-    const { x, y, w, h } = Road;
+    const { w, h } = Road;
     ctx.beginPath();
     ctx.rect(0, 0, w, h);
     ctx.fillStyle = "gray";
@@ -138,45 +126,6 @@ class Road {
       ctx.fillStyle = stripe.color;
       ctx.fill();
     });
-
-    // this.right.forEach((stripe) => {
-    //   ctx.beginPath();
-    //   ctx.rect(w + x, stripe.y, 10, Road.stripeHeight);
-    //   ctx.fillStyle = stripe.color;
-    //   ctx.fill();
-    // });
-  }
-  setDegree(modifier) {
-    // ctx.translate(centerX, centerY);
-    // ctx.rotate((modifier * (Road.roadDeg * Math.PI)) / 180);
-    // ctx.translate(-centerX, -centerY);
-  }
-
-  updateDeg() {
-    // if (Road.toDir === "right") {
-    //   Road.currentDegree += Road.roadDeg;
-    //   this.setDegree(1);
-    //   if (Road.currentDegree === Road.maxDeg) {
-    //     Road.toDir = "finishing";
-    //   }
-    // } else if (Road.toDir === "left") {
-    //   Road.currentDegree -= Road.roadDeg;
-    //   this.setDegree(-1);
-    //   if (Road.currentDegree === -Road.maxDeg) {
-    //     Road.toDir = "finishing";
-    //   }
-    // } else if (Road.toDir === "finishing") {
-    //   if (Road.currentDegree > 0) {
-    //     Road.currentDegree -= Road.roadDeg;
-    //     this.setDegree(-1);
-    //   } else if (Road.currentDegree < 0) {
-    //     Road.currentDegree += Road.roadDeg;
-    //     this.setDegree(1);
-    //   }
-    //   if (Road.currentDegree === 0) {
-    //     Road.toDir = null;
-    //   }
-    // }
   }
 
   update(timestamp) {
@@ -304,6 +253,9 @@ class Bonus {
 class Car {
   static offsetY = 30;
   playerSpeed = 7;
+  static beginX = 25;
+  static beginY = 25;
+  static playerH = 40;
   constructor(name, color) {
     if (name === "plr") {
       this.color = color;
@@ -312,12 +264,14 @@ class Car {
       this.name = name;
       this.object = new P(new V(), [
         new V(),
-        new V(40, 0),
-        new V(40, 60),
-        new V(0, 60),
+        new V(60, 0),
+        new V(60, 40),
+        new V(0, 40),
       ]);
 
-      this.object.setOffset(new V(centerX - 20, height - 100));
+      this.object.setOffset(
+        new V(Car.beginX, height - Car.beginY - Car.playerH)
+      );
       return;
     }
 
