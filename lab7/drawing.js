@@ -23,12 +23,7 @@ const gameConfig = {
 let actors = [];
 
 class ScoreBoard {
-  constructor() {
-    this.x = 40;
-    this.y = centerY - 100;
-    this.color = "white";
-    this.font = "20px Arial";
-  }
+  constructor() {}
 
   update() {}
 
@@ -69,7 +64,7 @@ class Road {
     const { w, h } = Road;
     ctx.beginPath();
     ctx.rect(0, 0, w, h);
-    ctx.fillStyle = "gray";
+    ctx.fillStyle = "darkgray";
     ctx.fill();
 
     this.left.forEach((stripe) => {

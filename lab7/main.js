@@ -3,22 +3,17 @@ function clearCanvas() {
 }
 
 function setup() {
-  // const grass = new Grass("grass");
   const road = new Road("road");
   const scoreboard = new ScoreBoard();
-  // const speedometer = new Speedometer();
 
   const player = new Car("plr", "pink");
 
   actors.push(road, player, scoreboard);
   randomCar();
-  // randomBonus();
-  // randomRotate();
 }
 
 function update(timestamp) {
   if (gameConfig.gameOver) return;
-  // actors.find((actor) => actor.name === "road").updateDeg();
   actors.forEach((actor) => actor.update(timestamp));
 }
 
