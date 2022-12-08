@@ -102,11 +102,60 @@ class Stones {
   update() {}
 }
 
+const getNearstSameColorStones = (x, y) => {
+  const color = grid[x][y];
+  const result = [];
+  const check = (x, y) => {
+    if (x < 0 || y < 0 || x >= grid.length || y >= grid.length) return;
+    if (grid[x][y] !== color) return;
+    if (result.some((r) => r.x === x && r.y === y)) return;
+
+    result.push({ x, y });
+    check(x + 1, y);
+    check(x - 1, y);
+    check(x, y + 1);
+    check(x, y - 1);
+  };
+
+  check(x, y);
+  return result;
+};
+
+const removeStonesIfTrapped = () => {
+  for (let i = 0; i < grid.length; i++) {
+    for (let j = 0; j < grid.length; j++) {
+      if (!grid[i][j]) continue;
+      const neares = getNearstSameColorStones(i, j);
+
+      let isTrapped = true;
+      for (let k = 0; k < neares.length; k++) {
+        const { x, y } = neares[k];
+        // check if there are emty space around
+        if (x + 1 < grid.length && !grid[x + 1][y]) isTrapped = false;
+        if (x - 1 >= 0 && !grid[x - 1][y]) isTrapped = false;
+        if (y + 1 < grid.length && !grid[x][y + 1]) isTrapped = false;
+        if (y - 1 >= 0 && !grid[x][y - 1]) isTrapped = false;
+
+        if (!isTrapped) break;
+      }
+
+      if (isTrapped) {
+        for (let k = 0; k < neares.length; k++) {
+          const { x, y } = neares[k];
+          grid[x][y] = "";
+        }
+      }
+    }
+  }
+};
+
 const { x, y } = canvas.getBoundingClientRect();
 
 canvas.addEventListener("click", (event) => {
   const cx = event.clientX - x;
   const cy = event.clientY - y;
+
+  let moved = false;
 
   for (let i = 0; i < grid.length; i++) {
     for (let j = 0; j < grid.length; j++) {
@@ -115,11 +164,18 @@ canvas.addEventListener("click", (event) => {
       const y = Grid.gridSpacing * j + Grid.y - 30;
 
       if (cx > x && cx < x + 2 * offset && cy > y && cy < y + 2 * offset) {
-        if (grid[i][j]) return;
+        if (grid[i][j]) break;
         grid[i][j] = gameConfig.turn;
         gameConfig.turn = gameConfig.turn === "B" ? "W" : "B";
-        return;
+        moved = true;
+        break;
       }
     }
+
+    if (moved) break;
+  }
+
+  if (moved) {
+    removeStonesIfTrapped();
   }
 });
