@@ -16,7 +16,7 @@ const centerY = canvas.height / 2;
 const width = canvas.width;
 const height = canvas.height;
 
-const grid = new Array(9).fill("").map(() => new Array(9).fill("B"));
+const grid = new Array(9).fill("").map(() => new Array(9).fill("W"));
 
 const gameConfig = {
   gameOver: false,
@@ -32,8 +32,8 @@ class Plane {
 
   draw() {
     ctx.beginPath();
-    ctx.fillRect(0, 0, this.w, this.h);
     ctx.fillStyle = "#f09f43";
+    ctx.fillRect(0, 0, this.w, this.h);
   }
 
   update() {}
@@ -81,23 +81,18 @@ class Stones {
   draw() {
     for (let i = 0; i < grid.length; i++) {
       for (let j = 0; j < grid.length; j++) {
+        if (!grid[i][j]) continue;
         const color = grid[i][j] === "B" ? "black" : "white";
-        if (grid[i][j] && i === 0) {
-          ctx.fillStyle = color;
-          ctx.beginPath();
-          ctx.fillRect(20, 20, 5, 5);
-          ctx.fill();
-          // ctx.beginPath();
-          // ctx.fillStyle = color;
-          // ctx.arc(
-          //   Grid.gridSpacing * i + Grid.x,
-          //   Grid.gridSpacing * j + Grid.y,
-          //   10,
-          //   0,
-          //   2 * Math.PI
-          // );
-          // ctx.fill();
-        }
+        ctx.beginPath();
+        ctx.fillStyle = color;
+        ctx.arc(
+          Grid.gridSpacing * i + Grid.x,
+          Grid.gridSpacing * j + Grid.y,
+          Grid.gridSpacing / 3,
+          0,
+          2 * Math.PI
+        );
+        ctx.fill();
       }
     }
   }
