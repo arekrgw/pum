@@ -16,7 +16,7 @@ const centerY = canvas.height / 2;
 const width = canvas.width;
 const height = canvas.height;
 
-const grid = new Array(9).fill("").map(() => new Array(9).fill(""));
+const grid = new Array(9).fill("").map(() => new Array(9).fill("B"));
 
 const gameConfig = {
   gameOver: false,
@@ -40,34 +40,61 @@ class Plane {
 }
 
 class Grid {
-  w = width - 200;
-  h = height - 200;
-  x = 100;
-  y = 100;
-  grid = grid;
-  static gridSpacing = (width - 200) / (grid.length - 1);
+  static w = width - 200;
+  static h = height - 200;
+  static x = 100;
+  static y = 100;
+  static gridSpacing = this.w / (grid.length - 1);
 
   constructor(name) {
     this.name = name;
   }
 
   draw() {
-    let start = this.x;
-    for (let i = 0; i < this.grid.length; i++) {
+    let start = Grid.x;
+    for (let i = 0; i < grid.length; i++) {
       ctx.beginPath();
-      ctx.moveTo(start, this.y);
-      ctx.lineTo(start, this.h + this.y);
+      ctx.moveTo(start, Grid.y);
+      ctx.lineTo(start, Grid.h + Grid.y);
       ctx.stroke();
       start += Grid.gridSpacing;
     }
 
-    start = this.y;
-    for (let i = 0; i < this.grid.length; i++) {
+    start = Grid.y;
+    for (let i = 0; i < grid.length; i++) {
       ctx.beginPath();
-      ctx.moveTo(this.x, start);
-      ctx.lineTo(this.w + this.x, start);
+      ctx.moveTo(Grid.x, start);
+      ctx.lineTo(Grid.w + Grid.x, start);
       ctx.stroke();
-      start += this.h / (this.grid.length - 1);
+      start += Grid.gridSpacing;
+    }
+  }
+
+  update() {}
+}
+
+class Stones {
+  constructor(name) {
+    this.name = name;
+  }
+
+  draw() {
+    for (let i = 0; i < grid.length; i++) {
+      for (let j = 0; j < grid.length; j++) {
+        const color = grid[i][j] === "B" ? "black" : "white";
+        if (grid[i][j] && i === 0) {
+          ctx.beginPath();
+          ctx.fillStyle = color;
+          ctx.arc(
+            Grid.gridSpacing * i + Grid.x,
+            Grid.gridSpacing * j + Grid.y,
+            20,
+            0,
+            2 * Math.PI
+          );
+          ctx.fill();
+        }
+      }
     }
   }
 

@@ -5,8 +5,9 @@ function clearCanvas() {
 function setup() {
   const plane = new Plane("plane");
   const grid = new Grid("grid");
+  const stones = new Stones("stones");
 
-  actors.push(plane, grid);
+  actors.push(plane, grid, stones);
 }
 
 function update(timestamp) {
