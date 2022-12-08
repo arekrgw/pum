@@ -24,6 +24,25 @@ const gameConfig = {
   turn: "B",
 };
 
+class ScoreBoard {
+  constructor(name) {
+    this.name = name;
+  }
+
+  draw() {
+    ctx.beginPath();
+    ctx.fillStyle = "black";
+    ctx.font = "25px Arial";
+    ctx.fillText(
+      `Ruch: ${gameConfig.turn === "B" ? "Czarny" : "Biały"}`,
+      10,
+      30
+    );
+  }
+
+  update() {}
+}
+
 class Plane {
   w = width;
   h = height;

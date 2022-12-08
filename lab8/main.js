@@ -6,8 +6,9 @@ function setup() {
   const plane = new Plane("plane");
   const grid = new Grid("grid");
   const stones = new Stones("stones");
+  const scoreboard = new ScoreBoard("scoreboard");
 
-  actors.push(plane, grid, stones);
+  actors.push(plane, grid, stones, scoreboard);
 }
 
 function update(timestamp) {
