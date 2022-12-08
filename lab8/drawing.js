@@ -199,3 +199,4 @@ canvas.addEventListener("click", (event) => {
     removeStonesIfTrapped();
   }
 });
+
