@@ -83,16 +83,20 @@ class Stones {
       for (let j = 0; j < grid.length; j++) {
         const color = grid[i][j] === "B" ? "black" : "white";
         if (grid[i][j] && i === 0) {
-          ctx.beginPath();
           ctx.fillStyle = color;
-          ctx.arc(
-            Grid.gridSpacing * i + Grid.x,
-            Grid.gridSpacing * j + Grid.y,
-            20,
-            0,
-            2 * Math.PI
-          );
+          ctx.beginPath();
+          ctx.fillRect(20, 20, 5, 5);
           ctx.fill();
+          // ctx.beginPath();
+          // ctx.fillStyle = color;
+          // ctx.arc(
+          //   Grid.gridSpacing * i + Grid.x,
+          //   Grid.gridSpacing * j + Grid.y,
+          //   10,
+          //   0,
+          //   2 * Math.PI
+          // );
+          // ctx.fill();
         }
       }
     }
