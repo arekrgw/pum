@@ -15,6 +15,7 @@ const centerX = canvas.width / 2;
 const centerY = canvas.height / 2;
 const width = canvas.width;
 const height = canvas.height;
+
 let actors = [];
 
 const grid = new Array(9).fill("").map(() => new Array(9).fill(""));
