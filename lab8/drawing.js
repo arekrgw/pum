@@ -15,11 +15,13 @@ const centerX = canvas.width / 2;
 const centerY = canvas.height / 2;
 const width = canvas.width;
 const height = canvas.height;
+let actors = [];
 
-const grid = new Array(9).fill("").map(() => new Array(9).fill("W"));
+const grid = new Array(9).fill("").map(() => new Array(9).fill(""));
 
 const gameConfig = {
   gameOver: false,
+  turn: "B",
 };
 
 class Plane {
@@ -100,4 +102,24 @@ class Stones {
   update() {}
 }
 
-let actors = [];
+const { x, y } = canvas.getBoundingClientRect();
+
+canvas.addEventListener("click", (event) => {
+  const cx = event.clientX - x;
+  const cy = event.clientY - y;
+
+  for (let i = 0; i < grid.length; i++) {
+    for (let j = 0; j < grid.length; j++) {
+      const offset = 30;
+      const x = Grid.gridSpacing * i + Grid.x - 30;
+      const y = Grid.gridSpacing * j + Grid.y - 30;
+
+      if (cx > x && cx < x + 2 * offset && cy > y && cy < y + 2 * offset) {
+        if (grid[i][j]) return;
+        grid[i][j] = gameConfig.turn;
+        gameConfig.turn = gameConfig.turn === "B" ? "W" : "B";
+        return;
+      }
+    }
+  }
+});
