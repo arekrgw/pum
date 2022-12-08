@@ -24,6 +24,7 @@ const gameConfig = {
   turn: "B",
 };
 
+
 class ScoreBoard {
   constructor(name) {
     this.name = name;
