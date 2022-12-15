@@ -89,6 +89,7 @@ class Grid {
       ctx.moveTo(Grid.x, start);
       ctx.lineTo(Grid.w + Grid.x, start);
       ctx.stroke();
+
       start += Grid.gridSpacing;
     }
   }
