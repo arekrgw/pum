@@ -106,6 +106,7 @@ class Stones {
     for (let i = 0; i < grid.length; i++) {
       for (let j = 0; j < grid.length; j++) {
         if (!grid[i][j]) continue;
+
         const color = grid[i][j] === "B" ? "black" : "white";
         ctx.beginPath();
         ctx.fillStyle = color;
