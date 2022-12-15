@@ -119,6 +119,7 @@ class Stones {
     }
   }
 
+
   update() {}
 }
 
