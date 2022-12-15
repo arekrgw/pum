@@ -127,6 +127,7 @@ class Stones {
 const getNearstSameColorStones = (x, y) => {
   const color = grid[x][y];
   const result = [];
+
   const check = (x, y) => {
     if (x < 0 || y < 0 || x >= grid.length || y >= grid.length) return;
     if (grid[x][y] !== color) return;
