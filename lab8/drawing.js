@@ -185,6 +185,7 @@ canvas.addEventListener("click", (event) => {
   for (let i = 0; i < grid.length; i++) {
     for (let j = 0; j < grid.length; j++) {
       const offset = 30;
+
       const x = Grid.gridSpacing * i + Grid.x - 30;
       const y = Grid.gridSpacing * j + Grid.y - 30;
 
@@ -204,4 +205,3 @@ canvas.addEventListener("click", (event) => {
     removeStonesIfTrapped();
   }
 });
-
