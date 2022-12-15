@@ -116,6 +116,7 @@ class Stones {
           0,
           2 * Math.PI
         );
+
         ctx.fill();
       }
     }
