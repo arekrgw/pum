@@ -31,6 +31,7 @@ function draw(timestamp) {
   }
 
   lastRender = timestamp;
+
   update(timestamp);
   render(timestamp);
 
